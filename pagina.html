@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mis Pictogramas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-bg: #F0F9FF; /* Soft sky blue */
+            --card-bg: #FFFFFF;
+            --text-color: #334155;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden; /* Prevent scrolling, keep it focused */
+        }
+
+        .slide-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            perspective: 1000px;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateX(100%) scale(0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            border: 8px solid white;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            z-index: 10;
+        }
+
+        .slide.exit-left {
+            opacity: 0;
+            transform: translateX(-100%) scale(0.95);
+            z-index: 5;
+        }
+
+        .slide.exit-right {
+            opacity: 0;
+            transform: translateX(100%) scale(0.95);
+            z-index: 5;
+        }
+
+        .slide.enter-left {
+            opacity: 0;
+            transform: translateX(-100%) scale(0.95);
+        }
+
+        /* Gentle button hover effects */
+        .nav-btn {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .nav-btn:active {
+            transform: scale(0.92);
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col items-center justify-center p-4 sm:p-8">
+
+    <!-- App Header -->
+    <header class="text-center mb-6 sm:mb-10 w-full max-w-lg">
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-blue-400 drop-shadow-sm tracking-wide">
+            Mis Pictogramas
+        </h1>
+        <p class="text-slate-400 text-lg sm:text-xl mt-2 font-semibold">Desliza o toca las flechas</p>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="w-full max-w-md sm:max-w-lg aspect-square relative mb-8" id="touch-area">
+        <div id="slide-container" class="slide-container">
+        </div>
+    </main>
+
+    <!-- Navigation Controls -->
+    <nav class="flex items-center justify-between w-full max-w-md sm:max-w-lg px-4">
+        <button id="prev-btn" class="nav-btn bg-pink-300 hover:bg-pink-400 text-white rounded-full p-4 sm:p-6 shadow-lg shadow-pink-200 focus:outline-none" aria-label="Anterior">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 sm:h-14 sm:w-14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+
+        <!-- Progress Indicator (Dots) -->
+        <div id="dots-container" class="flex space-x-3">
+            <!-- Dots injected by JS -->
+        </div>
+
+        <button id="next-btn" class="nav-btn bg-green-400 hover:bg-green-500 text-white rounded-full p-4 sm:p-6 shadow-lg shadow-green-200 focus:outline-none" aria-label="Siguiente">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 sm:h-14 sm:w-14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+    </nav>
+
+    <script>
+        // Data for our pictograms (inspired by the provided PDF themes)
+        const pictograms = [
+            { id: 1, title: "Despertarse", color: "FDE68A", textCol: "B45309", emoji: "☀️" }, // Pastel Yellow
+            { id: 2, title: "Vestirse", color: "BAE6FD", textCol: "0369A1", emoji: "👕" }, // Pastel Blue
+            { id: 3, title: "Desayunar", color: "BBF7D0", textCol: "15803D", emoji: "🥣" }, // Pastel Green
+            { id: 4, title: "Lavarse los dientes", color: "E9D5FF", textCol: "6B21A8", emoji: "🪥" }, // Pastel Purple
+            { id: 5, title: "Ir a la escuela", color: "FECDD3", textCol: "BE123C", emoji: "🎒" }, // Pastel Rose
+            { id: 6, title: "Hola", color: "C7D2FE", textCol: "3730A3", emoji: "👋" }, // Pastel Indigo
+            { id: 7, title: "Por favor", color: "FED7AA", textCol: "C2410C", emoji: "🙏" }, // Pastel Orange
+            { id: 8, title: "Gracias", color: "A7F3D0", textCol: "047857", emoji: "🫂" } // Pastel Emerald
+        ];
+
+        let currentIndex = 0;
+        let isAnimating = false;
+
+        const container = document.getElementById('slide-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const dotsContainer = document.getElementById('dots-container');
+
+        function createSlideElement(item, directionClass = 'enter-right') {
+            const slide = document.createElement('div');
+            
+            slide.className = `slide ${directionClass}`;
+            slide.style.borderColor = `#${item.color}`;
+            
+            // Using huge native emojis inside a colored background instead of loading external images
+            slide.innerHTML = `
+                <div class="w-full flex-1 flex items-center justify-center bg-[#${item.color}] bg-opacity-30 rounded-t-2xl mb-4 p-4">
+                    <span class="text-[8rem] sm:text-[10rem] drop-shadow-xl" style="line-height: 1; user-select: none;">${item.emoji}</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold pb-6 capitalize text-center px-4" style="color: #${item.textCol}; line-height: 1.2;">
+                    ${item.title}
+                </h2>
+            `;
+            return slide;
+        }
+
+        function updateDots() {
+            dotsContainer.innerHTML = '';
+            pictograms.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.className = `w-4 h-4 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-blue-400 scale-125' : 'bg-gray-200'}`;
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        function goToSlide(newIndex, direction) {
+            if (isAnimating || newIndex === currentIndex) return;
+            isAnimating = true;
+
+            const currentSlide = container.querySelector('.active');
+            const newSlide = createSlideElement(pictograms[newIndex], direction === 'next' ? 'slide' : 'enter-left');
+            
+            container.appendChild(newSlide);
+
+            // Trigger reflow to ensure the transition applies
+            void newSlide.offsetWidth;
+
+            if (currentSlide) {
+                currentSlide.classList.remove('active');
+                currentSlide.classList.add(direction === 'next' ? 'exit-left' : 'exit-right');
+            }
+            
+            newSlide.classList.remove('enter-left');
+            newSlide.classList.add('active');
+
+            currentIndex = newIndex;
+            updateDots();
+
+            // Clean up old slide after animation completes
+            setTimeout(() => {
+                if (currentSlide) {
+                    currentSlide.remove();
+                }
+                isAnimating = false;
+            }, 600); // matches CSS transition duration
+        }
+
+        function nextSlide() {
+            const nextIndex = (currentIndex + 1) % pictograms.length;
+            goToSlide(nextIndex, 'next');
+        }
+
+        function prevSlide() {
+            const prevIndex = (currentIndex - 1 + pictograms.length) % pictograms.length;
+            goToSlide(prevIndex, 'prev');
+        }
+
+        // Button Listeners
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        // Touch/Swipe Gestures implementation
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const touchArea = document.getElementById('touch-area');
+
+        touchArea.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        touchArea.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const swipeThreshold = 50; 
+            if (touchEndX < touchStartX - swipeThreshold) {
+                // Swiped Left -> Go to Next
+                nextSlide();
+            }
+            if (touchEndX > touchStartX + swipeThreshold) {
+                // Swiped Right -> Go to Prev
+                prevSlide();
+            }
+        }
+
+        const initialSlide = createSlideElement(pictograms[0], 'active');
+        container.appendChild(initialSlide);
+        updateDots();
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+    </script>
+</body>
+</html>
