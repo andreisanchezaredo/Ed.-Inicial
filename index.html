@@ -9,8 +9,7 @@
  
     <style>
         :root {
-            --primary-bg: #F0F9FF; /* Soft sky blue */
-            --card-bg: #FFFFFF;
+            --primary-bg: #F0F9FF;
             --text-color: #334155;
         }
  
@@ -25,7 +24,7 @@
             -ms-user-select: none;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
-            overflow: hidden; /* Prevent scrolling, keep it focused */
+            overflow: hidden;
         }
  
         .slide-container {
@@ -51,7 +50,7 @@
             gap: 1rem;
             background: white;
             border-radius: 2rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
             border: 8px solid white;
             padding: 1.5rem;
             overflow-y: auto;
@@ -62,33 +61,13 @@
             transform: translateX(0) scale(1);
             z-index: 10;
         }
+        .slide.exit-left { opacity: 0; transform: translateX(-100%) scale(0.95); z-index: 5; }
+        .slide.exit-right { opacity: 0; transform: translateX(100%) scale(0.95); z-index: 5; }
+        .slide.enter-left { opacity: 0; transform: translateX(-100%) scale(0.95); }
  
-        .slide.exit-left {
-            opacity: 0;
-            transform: translateX(-100%) scale(0.95);
-            z-index: 5;
-        }
+        .nav-btn { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .nav-btn:active { transform: scale(0.92); }
  
-        .slide.exit-right {
-            opacity: 0;
-            transform: translateX(100%) scale(0.95);
-            z-index: 5;
-        }
- 
-        .slide.enter-left {
-            opacity: 0;
-            transform: translateX(-100%) scale(0.95);
-        }
- 
-        /* Gentle button hover effects */
-        .nav-btn {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .nav-btn:active {
-            transform: scale(0.92);
-        }
- 
-        /* --- Pictogram card sections --- */
         .pic-title {
             border-radius: 1.25rem;
             padding: 0.7rem 0.9rem;
@@ -113,11 +92,7 @@
             gap: 0.5rem;
         }
  
-        .pic-frame .emoji {
-            font-size: clamp(4rem, 20vw, 7.5rem);
-            line-height: 1;
-        }
- 
+        .pic-frame .emoji { font-size: clamp(4rem, 20vw, 7.5rem); line-height: 1; }
         .pic-frame img {
             width: 100%;
             height: 100%;
@@ -162,57 +137,24 @@
         }
  
         .star-btn {
-            background: none;
-            border: none;
-            padding: 0.2rem;
-            cursor: pointer;
-            transition: transform 0.15s ease;
+            background: none; border: none; padding: 0.2rem; cursor: pointer; transition: transform 0.15s ease;
         }
-        .star-btn:active {
-            transform: scale(0.85);
-        }
-        .star-btn svg {
-            width: clamp(1.8rem, 7.5vw, 2.7rem);
-            height: clamp(1.8rem, 7.5vw, 2.7rem);
-            stroke: #F59E0B;
-            stroke-width: 1.5;
-            fill: none;
-            transition: fill 0.15s ease;
-        }
-        .star-btn.filled svg {
-            fill: #FBBF24;
-        }
+        .star-btn:active { transform: scale(0.85); }
+        .star-btn svg { width: clamp(1.8rem, 7.5vw, 2.7rem); height: clamp(1.8rem, 7.5vw, 2.7rem); stroke: #F59E0B; stroke-width: 1.5; fill: none; transition: fill 0.15s ease; }
+        .star-btn.filled svg { fill: #FBBF24; }
  
-        /* Praise toast shown when 5 stars are reached */
         #praise-toast {
-            position: fixed;
-            left: 50%;
-            top: 18%;
-            transform: translate(-50%, -20px) scale(0.9);
-            background: #FFFFFF;
-            border: 3px solid #FBBF24;
-            color: #B45309;
-            font-weight: 800;
-            font-size: clamp(1.1rem, 5vw, 1.6rem);
-            padding: 0.9rem 1.6rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.2);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease, transform 0.25s ease;
-            z-index: 50;
-            text-align: center;
-            white-space: nowrap;
+            position: fixed; left: 50%; top: 18%; transform: translate(-50%, -20px) scale(0.9);
+            background: #FFFFFF; border: 3px solid #FBBF24; color: #B45309; font-weight: 800;
+            font-size: clamp(1.1rem, 5vw, 1.6rem); padding: 0.9rem 1.6rem; border-radius: 1.5rem;
+            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.2); opacity: 0; pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease; z-index: 50; text-align: center; white-space: nowrap;
         }
-        #praise-toast.show {
-            opacity: 1;
-            transform: translate(-50%, 0) scale(1);
-        }
+        #praise-toast.show { opacity: 1; transform: translate(-50%, 0) scale(1); }
     </style>
 </head>
 <body class="h-screen w-screen flex flex-col items-center justify-center p-2 sm:p-4">
  
-    <!-- App Header -->
     <header class="text-center mb-2 sm:mb-3 w-full max-w-lg">
         <h1 class="text-2xl sm:text-4xl font-extrabold text-blue-400 drop-shadow-sm tracking-wide">
             Mis Pictogramas
@@ -220,16 +162,12 @@
         <p class="text-slate-400 text-base sm:text-lg mt-1 font-semibold">Desliza o toca las flechas</p>
     </header>
  
-    <!-- Main Content Area -->
     <main class="w-full max-w-xl sm:max-w-2xl relative mb-8" id="touch-area" style="height: min(90vh, 900px);">
-        <div id="slide-container" class="slide-container">
-        </div>
+        <div id="slide-container" class="slide-container"></div>
     </main>
  
-    <!-- Praise toast -->
     <div id="praise-toast"></div>
  
-    <!-- Navigation Controls -->
     <nav class="flex items-center justify-between w-full max-w-md sm:max-w-lg px-4">
         <button id="prev-btn" class="nav-btn bg-pink-300 hover:bg-pink-400 text-white rounded-full p-3 sm:p-5 shadow-lg shadow-pink-200 focus:outline-none" aria-label="Anterior">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 sm:h-14 sm:w-14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
@@ -237,10 +175,7 @@
             </svg>
         </button>
  
-        <!-- Progress Indicator (Dots) -->
-        <div id="dots-container" class="flex flex-wrap justify-center gap-2 max-w-[45%]">
-            <!-- Dots injected by JS -->
-        </div>
+        <div id="dots-container" class="flex flex-wrap justify-center gap-2 max-w-[45%]"></div>
  
         <button id="next-btn" class="nav-btn bg-green-400 hover:bg-green-500 text-white rounded-full p-3 sm:p-5 shadow-lg shadow-green-200 focus:outline-none" aria-label="Siguiente">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 sm:h-14 sm:w-14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
@@ -250,21 +185,30 @@
     </nav>
  
     <script>
+        // Diccionario de colores (Rojo, Amarillo, Verde)
+        const themes = {
+            rojo: { bg: 'FECACA', text: 'B91C1C' },
+            amarillo: { bg: 'FEF08A', text: 'A16207' },
+            verde: { bg: 'BBF7D0', text: '15803D' }
+        };
 
-        // ------------------------------------------------------------------
+        // Aquí agregas tus 20 pictogramas. Pon el nombre exacto de tu archivo en 'img'
         const pictograms = [
-            { id: 1, title: "Despertarse", caption: "Despertarse", desc: "Abro los ojos y respiro profundo. Ya es un nuevo día.", color: "FDE68A", textCol: "B45309", emoji: "☀️" },
-            { id: 2, title: "Vestirse", caption: "Vestirse", desc: "Elijo mi ropa y me visto solo/a.", color: "BAE6FD", textCol: "0369A1", emoji: "👕" },
-            { id: 3, title: "Desayunar", caption: "Desayunar", desc: "Como despacio y disfruto mi comida.", color: "BBF7D0", textCol: "15803D", emoji: "🥣" },
-            { id: 4, title: "Lavarse los dientes", caption: "Lavarse los dientes", desc: "Cepillo mis dientes de arriba a abajo.", color: "E9D5FF", textCol: "6B21A8", emoji: "🪥" },
-            { id: 5, title: "Ir a la escuela", caption: "Ir a la escuela", desc: "Tomo mi mochila y camino con cuidado.", color: "FECDD3", textCol: "BE123C", emoji: "🎒" },
-            { id: 6, title: "Hola", caption: "Hola", desc: "Saludo con una sonrisa a las personas.", color: "C7D2FE", textCol: "3730A3", emoji: "👋" },
-            { id: 7, title: "Por favor", caption: "Por favor", desc: "Pido las cosas con amabilidad.", color: "FED7AA", textCol: "C2410C", emoji: "🙏" },
-            { id: 8, title: "Gracias", caption: "Gracias", desc: "Agradezco cuando alguien me ayuda.", color: "A7F3D0", textCol: "047857", emoji: "🫂" }
+            // Los primeros 5 SIN estrellas (showStars: false)
+            { id: 1, title: "Despertarse", caption: "Despertarse", desc: "Abro los ojos.", img: "imagen1.png", emoji: "☀️", theme: "amarillo", showStars: false },
+            { id: 2, title: "Vestirse", caption: "Vestirse", desc: "Elijo mi ropa.", img: "imagen2.png", emoji: "👕", theme: "rojo", showStars: false },
+            { id: 3, title: "Desayunar", caption: "Desayunar", desc: "Como despacio.", img: "imagen3.png", emoji: "🥣", theme: "verde", showStars: false },
+            { id: 4, title: "Lavarse", caption: "Lavarse los dientes", desc: "Cepillo mis dientes.", img: "imagen4.png", emoji: "🪥", theme: "rojo", showStars: false },
+            { id: 5, title: "Escuela", caption: "Ir a la escuela", desc: "Tomo mi mochila.", img: "imagen5.png", emoji: "🎒", theme: "amarillo", showStars: false },
+            
+            // A partir del 6 CON estrellas (showStars: true)
+            { id: 6, title: "Hola", caption: "Hola", desc: "Saludo a las personas.", img: "imagen6.png", emoji: "👋", theme: "verde", showStars: true },
+            { id: 7, title: "Por favor", caption: "Por favor", desc: "Pido con amabilidad.", img: "imagen7.png", emoji: "🙏", theme: "rojo", showStars: true },
+            { id: 8, title: "Gracias", caption: "Gracias", desc: "Agradezco la ayuda.", img: "imagen8.png", emoji: "🫂", theme: "amarillo", showStars: true }
+            // Copia y pega la línea de arriba para agregar del 9 al 20, cambiando el id y los datos.
         ];
  
         const PRAISE_MESSAGES = ["¡Perfecto! 🌟", "¡Magnífico! 🎉", "¡Muy bien! 👏"];
- 
         let currentIndex = 0;
         let isAnimating = false;
  
@@ -279,33 +223,27 @@
             praiseToast.textContent = msg;
             praiseToast.classList.add('show');
             clearTimeout(showPraise._t);
-            showPraise._t = setTimeout(() => {
-                praiseToast.classList.remove('show');
-            }, 1800);
+            showPraise._t = setTimeout(() => { praiseToast.classList.remove('show'); }, 1800);
         }
  
         function buildStars(item, starsWrap) {
             starsWrap.innerHTML = '';
-            let current = 0; // always starts at 0 for every visit/device
- 
+            let current = 0; 
             function render() {
                 Array.from(starsWrap.children).forEach((btn, idx) => {
                     btn.classList.toggle('filled', idx < current);
                 });
             }
- 
             for (let i = 1; i <= 5; i++) {
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = 'star-btn';
-                btn.setAttribute('aria-label', `Calificar ${i} estrella${i > 1 ? 's' : ''}`);
+                btn.setAttribute('aria-label', `Calificar ${i} estrellas`);
                 btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.7-4.9 4.5 1.3 6.6L12 16.9l-5.9 3.5 1.3-6.6-4.9-4.5 6.6-.7z" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
                 btn.addEventListener('click', () => {
                     current = i;
                     render();
-                    if (current === 5) {
-                        showPraise();
-                    }
+                    if (current === 5) showPraise();
                 });
                 starsWrap.appendChild(btn);
             }
@@ -314,35 +252,47 @@
  
         function createSlideElement(item, directionClass = 'enter-right') {
             const slide = document.createElement('div');
+            const theme = themes[item.theme] || themes.amarillo; // Por defecto amarillo si te equivocas al escribir
+            
             slide.className = `slide ${directionClass}`;
-            slide.style.borderColor = `#${item.color}`;
+            slide.style.borderColor = `#${theme.bg}`;
  
+            // Si la imagen no se encuentra, mostrará el emoji temporalmente
             const pictureHTML = item.img
-                ? `<img src="${item.img}" alt="${item.caption}">`
+                ? `<img src="${item.img}" alt="${item.caption}" onerror="this.outerHTML='<span class=\\'emoji\\' style=\\'user-select: none;\\'>${item.emoji}</span>'">`
                 : `<span class="emoji" style="user-select: none;">${item.emoji}</span>`;
- 
-            slide.innerHTML = `
-                <div class="pic-title" style="background-color:#${item.color}33; border-color:#${item.color}; color:#${item.textCol};">
+
+            // HTML base del slide
+            let slideHTML = `
+                <div class="pic-title" style="background-color:#${theme.bg}; border-color:#${theme.text}; color:#${theme.text};">
                     ${item.title}
                 </div>
- 
-                <div class="pic-frame" style="background-color:#${item.color}22; border-color:#${item.color};">
+                <div class="pic-frame" style="background-color:#${theme.bg}55; border-color:#${theme.bg};">
                     ${pictureHTML}
-                    <div class="pic-caption" style="color:#${item.textCol};">${item.caption}</div>
+                    <div class="pic-caption" style="color:#${theme.text};">${item.caption}</div>
                 </div>
- 
-                <div class="pic-desc" style="background-color:#${item.color}22; border-color:#${item.color}; color:#${item.textCol};">
+                <div class="pic-desc" style="background-color:#${theme.bg}55; border-color:#${theme.bg}; color:#${theme.text};">
                     ${item.desc}
                 </div>
- 
-                <div class="pic-rating">
-                    <div class="rating-label">¡Lo estoy logrando!</div>
-                    <div class="stars-wrap flex items-center justify-center gap-1"></div>
-                </div>
             `;
+
+            // Condicional: Solo renderizar estrellas si showStars es true
+            if (item.showStars) {
+                slideHTML += `
+                    <div class="pic-rating">
+                        <div class="rating-label">¡Lo estoy logrando!</div>
+                        <div class="stars-wrap flex items-center justify-center gap-1"></div>
+                    </div>
+                `;
+            }
+
+            slide.innerHTML = slideHTML;
  
-            const starsWrap = slide.querySelector('.stars-wrap');
-            buildStars(item, starsWrap);
+            // Inyectar funcionalidad de estrellas solo si el contenedor existe
+            if (item.showStars) {
+                const starsWrap = slide.querySelector('.stars-wrap');
+                buildStars(item, starsWrap);
+            }
  
             return slide;
         }
@@ -364,8 +314,6 @@
             const newSlide = createSlideElement(pictograms[newIndex], direction === 'next' ? 'slide' : 'enter-left');
  
             container.appendChild(newSlide);
- 
-            // Trigger reflow to ensure the transition applies
             void newSlide.offsetWidth;
  
             if (currentSlide) {
@@ -379,13 +327,10 @@
             currentIndex = newIndex;
             updateDots();
  
-            // Clean up old slide after animation completes
             setTimeout(() => {
-                if (currentSlide) {
-                    currentSlide.remove();
-                }
+                if (currentSlide) currentSlide.remove();
                 isAnimating = false;
-            }, 600); // matches CSS transition duration
+            }, 600);
         }
  
         function nextSlide() {
@@ -398,39 +343,25 @@
             goToSlide(prevIndex, 'prev');
         }
  
-        // Button Listeners
         nextBtn.addEventListener('click', nextSlide);
         prevBtn.addEventListener('click', prevSlide);
  
-        // Touch/Swipe Gestures implementation
         let touchStartX = 0;
         let touchEndX = 0;
         const touchArea = document.getElementById('touch-area');
  
-        touchArea.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
- 
+        touchArea.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
         touchArea.addEventListener('touchend', (e) => {
             touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
- 
-        function handleSwipe() {
             const swipeThreshold = 50;
-            if (touchEndX < touchStartX - swipeThreshold) {
-                // Swiped Left -> Go to Next
-                nextSlide();
-            }
-            if (touchEndX > touchStartX + swipeThreshold) {
-                // Swiped Right -> Go to Prev
-                prevSlide();
-            }
-        }
+            if (touchEndX < touchStartX - swipeThreshold) nextSlide();
+            if (touchEndX > touchStartX + swipeThreshold) prevSlide();
+        }, { passive: true });
  
         const initialSlide = createSlideElement(pictograms[0], 'active');
         container.appendChild(initialSlide);
         updateDots();
+        
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight') nextSlide();
             if (e.key === 'ArrowLeft') prevSlide();
@@ -438,4 +369,3 @@
     </script>
 </body>
 </html>
- 
