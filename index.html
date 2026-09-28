@@ -56,11 +56,7 @@
             overflow-y: auto;
         }
  
-        .slide.active {
-            opacity: 1;
-            transform: translateX(0) scale(1);
-            z-index: 10;
-        }
+        .slide.active { opacity: 1; transform: translateX(0) scale(1); z-index: 10; }
         .slide.exit-left { opacity: 0; transform: translateX(-100%) scale(0.95); z-index: 5; }
         .slide.exit-right { opacity: 0; transform: translateX(100%) scale(0.95); z-index: 5; }
         .slide.enter-left { opacity: 0; transform: translateX(-100%) scale(0.95); }
@@ -94,18 +90,6 @@
  
         .pic-frame .emoji { font-size: clamp(4rem, 20vw, 7.5rem); line-height: 1; }
         
-        /* Ajuste para que las imágenes de portada llenen el espacio sin deformarse */
-        .pic-frame img {
-            width: 100%;
-            height: 100%;
-            max-height: 100%;
-            max-width: 100%;
-            object-fit: contain;
-            flex: 1 1 auto;
-            min-height: 0;
-            border-radius: 0.5rem;
-        }
- 
         .pic-caption {
             font-weight: 800;
             font-size: clamp(0.85rem, 3.2vw, 1.05rem);
@@ -156,10 +140,29 @@
         }
         #praise-toast.show { opacity: 1; transform: translate(-50%, 0) scale(1); }
 
-        /* Estilo para los indicadores (puntitos) más pequeños ya que son 20 */
-        #dots-container {
-            max-width: 60%;
+        #dots-container { max-width: 60%; }
+
+        /* Estilo para el input de nombre en la imagen 2 */
+        .name-input {
+            width: 90%;
+            max-width: 400px;
+            padding: 0.8rem 1.5rem;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            text-align: center;
+            border: 4px dashed #86EFAC;
+            border-radius: 1.5rem;
+            margin-top: 1.5rem;
+            outline: none;
+            color: #166534;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            background: #F0FDF4;
+            transition: border-color 0.3s ease;
         }
+        .name-input:focus { border-color: #22C55E; background: #DCFCE7; }
+        
+        /* Contenedor principal con transición para cuando se expande en la imagen 6 */
+        #touch-area { transition: max-width 0.5s ease, height 0.5s ease; }
     </style>
 </head>
 <body class="h-screen w-screen flex flex-col items-center justify-center p-2 sm:p-4">
@@ -170,13 +173,14 @@
         </h1>
     </header>
  
+    <!-- El contenedor iniciará con tamaño normal -->
     <main class="w-full max-w-xl sm:max-w-2xl relative mb-6" id="touch-area" style="height: min(85vh, 800px);">
         <div id="slide-container" class="slide-container"></div>
     </main>
  
     <div id="praise-toast"></div>
  
-    <nav class="flex items-center justify-between w-full max-w-md sm:max-w-lg px-2">
+    <nav class="flex items-center justify-between w-full max-w-md sm:max-w-lg px-2" id="nav-container">
         <button id="prev-btn" class="nav-btn bg-pink-300 hover:bg-pink-400 text-white rounded-full p-3 shadow-lg shadow-pink-200 focus:outline-none" aria-label="Anterior">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 sm:h-12 sm:w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -197,36 +201,42 @@
             rojo: { bg: 'FECACA', text: 'B91C1C' },
             amarillo: { bg: 'FEF08A', text: 'A16207' },
             verde: { bg: 'BBF7D0', text: '15803D' },
-            // Nuevo tema rojizo para la imagen 6
             rojizo: { bg: 'FFE4E6', text: 'BE123C' } 
         };
 
+        // Arreglo donde guardamos la configuración de cada imagen.
+        // Aquí agregamos "rating" para guardar las estrellas y "userName" para el nombre.
         const pictograms = [
-            // Imágenes 1 al 5: isCover = true (Solo mostrará la imagen a pantalla completa)
             { id: 1, img: "img/imagen1.png", theme: "amarillo", isCover: true, showStars: false },
-            { id: 2, img: "img/imagen2.png", theme: "verde", isCover: true, showStars: false },
+            
+            // Imagen 2: Agregamos needsNameInput
+            { id: 2, img: "img/imagen2.png", theme: "verde", isCover: true, showStars: false, needsNameInput: true, userName: "" },
+            
             { id: 3, img: "img/imagen3.png", theme: "rojo", isCover: true, showStars: false },
-            { id: 4, img: "img/imagen4.png", theme: "amarillo", isCover: true, showStars: false },
-            { id: 5, img: "img/imagen5.png", theme: "verde", isCover: true, showStars: false },
             
-            // Imagen 6: Diseño específico rojizo claro que resalta el texto
-            { id: 6, title: "COSAS QUE NO DEBO HACER", caption: "¿QUÉ NO DEBO HACER?", desc: "Miro estas reglas y las practico todos los días", img: "img/imagen6.png", emoji: "🛑", theme: "rojizo", isCover: false, showStars: true },
+            // Imagen 4: smallImage para achicarla
+            { id: 4, img: "img/imagen4.png", theme: "amarillo", isCover: true, showStars: false, smallImage: true },
             
-            // Imágenes 7 al 20: Tienen título, descripción y sistema de estrellas
-            { id: 7, title: "No pego", caption: "Manos quietas", desc: "Uso mis manos para jugar bonito.", img: "img/imagen7.png", emoji: "✋", theme: "rojo", isCover: false, showStars: true },
-            { id: 8, title: "No grito", caption: "Voz baja", desc: "Hablo con voz tranquila en el aula.", img: "img/imagen8.png", emoji: "🗣️", theme: "amarillo", isCover: false, showStars: true },
-            { id: 9, title: "No escupo", caption: "Boca limpia", desc: "Mi saliva se queda en mi boca.", img: "img/imagen9.png", emoji: "👄", theme: "verde", isCover: false, showStars: true },
-            { id: 10, title: "No empujo", caption: "Espero", desc: "Respeto el espacio de mis amigos.", img: "img/imagen10.png", emoji: "🚶", theme: "rojo", isCover: false, showStars: true },
-            { id: 11, title: "No tiro objetos", caption: "Cuido", desc: "Los juguetes se quedan en la mesa o el piso.", img: "img/imagen11.png", emoji: "🧸", theme: "amarillo", isCover: false, showStars: true },
-            { id: 12, title: "No corro", caption: "Despacio", desc: "Camino tranquilo dentro del salón.", img: "img/imagen12.png", emoji: "🚶", theme: "verde", isCover: false, showStars: true },
-            { id: 13, title: "No rompo materiales", caption: "Cuido mis cosas", desc: "Trato bien mis cuadernos y colores.", img: "img/imagen13.png", emoji: "🖍️", theme: "rojo", isCover: false, showStars: true },
-            { id: 14, title: "No molesto", caption: "Buen amigo", desc: "Juego bonito con mis compañeros.", img: "img/imagen14.png", emoji: "🫂", theme: "amarillo", isCover: false, showStars: true },
-            { id: 15, title: "No hago berrinche", caption: "Me calmo", desc: "Respiro profundo cuando me enojo.", img: "img/imagen15.png", emoji: "🧘", theme: "verde", isCover: false, showStars: true },
-            { id: 16, title: "Escucho", caption: "Presto atención", desc: "Escucho a mi profesora.", img: "img/imagen16.png", emoji: "👂", theme: "amarillo", isCover: false, showStars: true },
-            { id: 17, title: "Sigo indicaciones", caption: "Hago caso", desc: "Sigo las reglas con alegría.", img: "img/imagen17.png", emoji: "✅", theme: "verde", isCover: false, showStars: true },
-            { id: 18, title: "Respeto", caption: "Soy amable", desc: "Digo por favor y gracias.", img: "img/imagen18.png", emoji: "🙏", theme: "rojo", isCover: false, showStars: true },
-            { id: 19, title: "Comparto", caption: "Juego juntos", desc: "Comparto mis juguetes.", img: "img/imagen19.png", emoji: "🤝", theme: "amarillo", isCover: false, showStars: true },
-            { id: 20, title: "Sonrío", caption: "Estoy feliz", desc: "Disfruto mi día en la escuela.", img: "img/imagen20.png", emoji: "😊", theme: "verde", isCover: false, showStars: true }
+            // Imagen 5: Título de "Mis emociones"
+            { id: 5, topTitle: "Mis emociones", img: "img/imagen5.png", theme: "verde", isCover: true, showStars: false },
+            
+            // Imagen 6: largeLayout para hacer el contenedor gigante
+            { id: 6, title: "COSAS QUE NO DEBO HACER", caption: "¿QUÉ NO DEBO HACER?", desc: "Miro estas reglas y las practico todos los días", img: "img/imagen6.png", emoji: "🛑", theme: "rojizo", isCover: false, showStars: true, largeLayout: true, rating: 0 },
+            
+            { id: 7, title: "No pego", caption: "Manos quietas", desc: "Uso mis manos para jugar bonito.", img: "img/imagen7.png", emoji: "✋", theme: "rojo", isCover: false, showStars: true, rating: 0 },
+            { id: 8, title: "No grito", caption: "Voz baja", desc: "Hablo con voz tranquila en el aula.", img: "img/imagen8.png", emoji: "🗣️", theme: "amarillo", isCover: false, showStars: true, rating: 0 },
+            { id: 9, title: "No escupo", caption: "Boca limpia", desc: "Mi saliva se queda en mi boca.", img: "img/imagen9.png", emoji: "👄", theme: "verde", isCover: false, showStars: true, rating: 0 },
+            { id: 10, title: "No empujo", caption: "Espero", desc: "Respeto el espacio de mis amigos.", img: "img/imagen10.png", emoji: "🚶", theme: "rojo", isCover: false, showStars: true, rating: 0 },
+            { id: 11, title: "No tiro objetos", caption: "Cuido", desc: "Los juguetes se quedan en la mesa o el piso.", img: "img/imagen11.png", emoji: "🧸", theme: "amarillo", isCover: false, showStars: true, rating: 0 },
+            { id: 12, title: "No corro", caption: "Despacio", desc: "Camino tranquilo dentro del salón.", img: "img/imagen12.png", emoji: "🚶", theme: "verde", isCover: false, showStars: true, rating: 0 },
+            { id: 13, title: "No rompo materiales", caption: "Cuido mis cosas", desc: "Trato bien mis cuadernos y colores.", img: "img/imagen13.png", emoji: "🖍️", theme: "rojo", isCover: false, showStars: true, rating: 0 },
+            { id: 14, title: "No molesto", caption: "Buen amigo", desc: "Juego bonito con mis compañeros.", img: "img/imagen14.png", emoji: "🫂", theme: "amarillo", isCover: false, showStars: true, rating: 0 },
+            { id: 15, title: "No hago berrinche", caption: "Me calmo", desc: "Respiro profundo cuando me enojo.", img: "img/imagen15.png", emoji: "🧘", theme: "verde", isCover: false, showStars: true, rating: 0 },
+            { id: 16, title: "Escucho", caption: "Presto atención", desc: "Escucho a mi profesora.", img: "img/imagen16.png", emoji: "👂", theme: "amarillo", isCover: false, showStars: true, rating: 0 },
+            { id: 17, title: "Sigo indicaciones", caption: "Hago caso", desc: "Sigo las reglas con alegría.", img: "img/imagen17.png", emoji: "✅", theme: "verde", isCover: false, showStars: true, rating: 0 },
+            { id: 18, title: "Respeto", caption: "Soy amable", desc: "Digo por favor y gracias.", img: "img/imagen18.png", emoji: "🙏", theme: "rojo", isCover: false, showStars: true, rating: 0 },
+            { id: 19, title: "Comparto", caption: "Juego juntos", desc: "Comparto mis juguetes.", img: "img/imagen19.png", emoji: "🤝", theme: "amarillo", isCover: false, showStars: true, rating: 0 },
+            { id: 20, title: "Sonrío", caption: "Estoy feliz", desc: "Disfruto mi día en la escuela.", img: "img/imagen20.png", emoji: "😊", theme: "verde", isCover: false, showStars: true, rating: 0 }
         ];
  
         const PRAISE_MESSAGES = ["¡Perfecto! 🌟", "¡Magnífico! 🎉", "¡Muy bien! 👏"];
@@ -238,6 +248,8 @@
         const nextBtn = document.getElementById('next-btn');
         const dotsContainer = document.getElementById('dots-container');
         const praiseToast = document.getElementById('praise-toast');
+        const touchAreaEl = document.getElementById('touch-area');
+        const navContainer = document.getElementById('nav-container');
  
         function showPraise() {
             const msg = PRAISE_MESSAGES[Math.floor(Math.random() * PRAISE_MESSAGES.length)];
@@ -249,12 +261,15 @@
  
         function buildStars(item, starsWrap) {
             starsWrap.innerHTML = '';
-            let current = 0; 
+            // Recuperamos las estrellas guardadas en este ítem (persistencia temporal)
+            let current = item.rating || 0; 
+            
             function render() {
                 Array.from(starsWrap.children).forEach((btn, idx) => {
                     btn.classList.toggle('filled', idx < current);
                 });
             }
+            
             for (let i = 1; i <= 5; i++) {
                 const btn = document.createElement('button');
                 btn.type = 'button';
@@ -263,6 +278,7 @@
                 btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.7-4.9 4.5 1.3 6.6L12 16.9l-5.9 3.5 1.3-6.6-4.9-4.5 6.6-.7z" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
                 btn.addEventListener('click', () => {
                     current = i;
+                    item.rating = current; // Guardamos en el arreglo para que no se borre al pasar de imagen
                     render();
                     if (current === 5) showPraise();
                 });
@@ -277,7 +293,6 @@
             
             slide.className = `slide ${directionClass}`;
             
-            // Si es el tema rojizo (imagen 6), pintamos el fondo del contenedor de rojo
             if (item.theme === 'rojizo') {
                 slide.style.backgroundColor = `#${theme.bg}`;
                 slide.style.borderColor = `#${theme.text}`;
@@ -287,25 +302,40 @@
             }
 
             if (item.isCover) {
-                slide.style.justifyContent = 'center';
-                slide.style.padding = '0';
                 slide.style.borderWidth = '0';
             }
  
+            // Control de tamaño de imagen para la imagen 4
+            let imgStyles = "border-radius: 0.5rem;";
+            if (item.smallImage) {
+                imgStyles += " max-height: 55%; width: auto; object-fit: contain; margin: 0 auto;";
+            } else {
+                imgStyles += " width: 100%; height: 100%; max-height: 100%; object-fit: contain;";
+            }
+
             const pictureHTML = item.img
-                ? `<img src="${item.img}" alt="${item.caption || 'Imagen'}" onerror="this.outerHTML='<span class=\\'emoji\\' style=\\'user-select: none;\\'>${item.emoji || '🖼️'}</span>'">`
+                ? `<img src="${item.img}" style="${imgStyles}" alt="${item.caption || 'Imagen'}" onerror="this.outerHTML='<span class=\\'emoji\\' style=\\'user-select: none;\\'>${item.emoji || '🖼️'}</span>'">`
                 : `<span class="emoji" style="user-select: none;">${item.emoji || '🖼️'}</span>`;
 
             let slideHTML = '';
 
             if (item.isCover) {
-                slideHTML = `
-                    <div class="pic-frame" style="background-color:transparent; border:none; padding:0; height:100%; width:100%; box-shadow: none;">
-                        ${pictureHTML}
-                    </div>
-                `;
+                slideHTML = `<div class="pic-frame" style="background-color:transparent; border:none; padding:1rem; height:100%; width:100%; box-shadow: none; display: flex; flex-direction: column; justify-content: center; align-items: center;">`;
+                
+                // Agregamos título arriba si tiene (Imagen 5)
+                if (item.topTitle) {
+                    slideHTML += `<h2 class="text-3xl sm:text-5xl font-extrabold text-center mb-6" style="color: #${theme.text}; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">${item.topTitle}</h2>`;
+                }
+
+                slideHTML += pictureHTML;
+
+                // Agregamos input de nombre si tiene (Imagen 2)
+                if (item.needsNameInput) {
+                    slideHTML += `<input type="text" class="name-input" placeholder="Escribe tu nombre aquí" value="${item.userName || ''}">`;
+                }
+
+                slideHTML += `</div>`;
             } else {
-                // Para el tema rojizo, hacemos que los cuadros internos sean blancos para crear contraste
                 const innerBg = item.theme === 'rojizo' ? 'FFFFFF' : `${theme.bg}44`;
 
                 slideHTML = `
@@ -314,7 +344,7 @@
                     </div>
                     <div class="pic-frame" style="background-color:#${innerBg}; border-color:#${item.theme === 'rojizo' ? theme.text : theme.bg};">
                         ${pictureHTML}
-                        <div class="pic-caption" style="color:#${theme.text};">${item.caption}</div>
+                        ${item.caption ? `<div class="pic-caption" style="color:#${theme.text};">${item.caption}</div>` : ''}
                     </div>
                     <div class="pic-desc" style="background-color:#${innerBg}; border-color:#${item.theme === 'rojizo' ? theme.text : theme.bg}; color:#${theme.text};">
                         ${item.desc}
@@ -333,6 +363,16 @@
 
             slide.innerHTML = slideHTML;
  
+            // Guardamos el nombre en el arreglo al momento de escribir (Persistencia temporal)
+            if (item.needsNameInput) {
+                const inputEl = slide.querySelector('.name-input');
+                if (inputEl) {
+                    inputEl.addEventListener('input', (e) => {
+                        item.userName = e.target.value;
+                    });
+                }
+            }
+
             if (item.showStars && !item.isCover) {
                 const starsWrap = slide.querySelector('.stars-wrap');
                 buildStars(item, starsWrap);
@@ -354,6 +394,21 @@
             if (isAnimating || newIndex === currentIndex) return;
             isAnimating = true;
  
+            // Si el nuevo pictograma tiene largeLayout (Imagen 6), expandimos el contenedor principal
+            if (pictograms[newIndex].largeLayout) {
+                touchAreaEl.classList.remove('max-w-xl', 'sm:max-w-2xl');
+                touchAreaEl.classList.add('max-w-3xl', 'sm:max-w-5xl');
+                touchAreaEl.style.height = 'min(92vh, 950px)';
+                navContainer.classList.remove('max-w-md', 'sm:max-w-lg');
+                navContainer.classList.add('max-w-xl', 'sm:max-w-3xl');
+            } else {
+                touchAreaEl.classList.add('max-w-xl', 'sm:max-w-2xl');
+                touchAreaEl.classList.remove('max-w-3xl', 'sm:max-w-5xl');
+                touchAreaEl.style.height = 'min(85vh, 800px)';
+                navContainer.classList.add('max-w-md', 'sm:max-w-lg');
+                navContainer.classList.remove('max-w-xl', 'sm:max-w-3xl');
+            }
+
             const currentSlide = container.querySelector('.active');
             const newSlide = createSlideElement(pictograms[newIndex], direction === 'next' ? 'slide' : 'enter-left');
  
@@ -392,10 +447,9 @@
  
         let touchStartX = 0;
         let touchEndX = 0;
-        const touchArea = document.getElementById('touch-area');
  
-        touchArea.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
-        touchArea.addEventListener('touchend', (e) => {
+        touchAreaEl.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+        touchAreaEl.addEventListener('touchend', (e) => {
             touchEndX = e.changedTouches[0].screenX;
             const swipeThreshold = 50;
             if (touchEndX < touchStartX - swipeThreshold) nextSlide();
