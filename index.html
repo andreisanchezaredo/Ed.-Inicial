@@ -93,6 +93,8 @@
         }
  
         .pic-frame .emoji { font-size: clamp(4rem, 20vw, 7.5rem); line-height: 1; }
+        
+        /* Ajuste para que las imágenes de portada llenen el espacio sin deformarse */
         .pic-frame img {
             width: 100%;
             height: 100%;
@@ -108,6 +110,7 @@
             font-weight: 800;
             font-size: clamp(0.85rem, 3.2vw, 1.05rem);
             flex-shrink: 0;
+            text-align: center;
         }
  
         .pic-desc {
@@ -152,6 +155,11 @@
             transition: opacity 0.25s ease, transform 0.25s ease; z-index: 50; text-align: center; white-space: nowrap;
         }
         #praise-toast.show { opacity: 1; transform: translate(-50%, 0) scale(1); }
+
+        /* Estilo para los indicadores (puntitos) más pequeños ya que son 20 */
+        #dots-container {
+            max-width: 60%;
+        }
     </style>
 </head>
 <body class="h-screen w-screen flex flex-col items-center justify-center p-2 sm:p-4">
@@ -162,23 +170,23 @@
         </h1>
     </header>
  
-    <main class="w-full max-w-xl sm:max-w-2xl relative mb-8" id="touch-area" style="height: min(90vh, 900px);">
+    <main class="w-full max-w-xl sm:max-w-2xl relative mb-6" id="touch-area" style="height: min(85vh, 800px);">
         <div id="slide-container" class="slide-container"></div>
     </main>
  
     <div id="praise-toast"></div>
  
-    <nav class="flex items-center justify-between w-full max-w-md sm:max-w-lg px-4">
-        <button id="prev-btn" class="nav-btn bg-pink-300 hover:bg-pink-400 text-white rounded-full p-3 sm:p-5 shadow-lg shadow-pink-200 focus:outline-none" aria-label="Anterior">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 sm:h-14 sm:w-14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+    <nav class="flex items-center justify-between w-full max-w-md sm:max-w-lg px-2">
+        <button id="prev-btn" class="nav-btn bg-pink-300 hover:bg-pink-400 text-white rounded-full p-3 shadow-lg shadow-pink-200 focus:outline-none" aria-label="Anterior">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 sm:h-12 sm:w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
         </button>
  
-        <div id="dots-container" class="flex flex-wrap justify-center gap-2 max-w-[45%]"></div>
+        <div id="dots-container" class="flex flex-wrap justify-center gap-1.5 sm:gap-2"></div>
  
-        <button id="next-btn" class="nav-btn bg-green-400 hover:bg-green-500 text-white rounded-full p-3 sm:p-5 shadow-lg shadow-green-200 focus:outline-none" aria-label="Siguiente">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 sm:h-14 sm:w-14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+        <button id="next-btn" class="nav-btn bg-green-400 hover:bg-green-500 text-white rounded-full p-3 shadow-lg shadow-green-200 focus:outline-none" aria-label="Siguiente">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 sm:h-12 sm:w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
             </svg>
         </button>
@@ -188,24 +196,37 @@
         const themes = {
             rojo: { bg: 'FECACA', text: 'B91C1C' },
             amarillo: { bg: 'FEF08A', text: 'A16207' },
-            verde: { bg: 'BBF7D0', text: '15803D' }
+            verde: { bg: 'BBF7D0', text: '15803D' },
+            // Nuevo tema rojizo para la imagen 6
+            rojizo: { bg: 'FFE4E6', text: 'BE123C' } 
         };
 
         const pictograms = [
-            // El primero: isCover = true (solo mostrará la imagen, sin títulos ni descripción)
-            // Fíjate que ahora dice "img/imagen1.png" para que busque en tu carpeta
+            // Imágenes 1 al 5: isCover = true (Solo mostrará la imagen a pantalla completa)
             { id: 1, img: "img/imagen1.png", theme: "amarillo", isCover: true, showStars: false },
+            { id: 2, img: "img/imagen2.png", theme: "verde", isCover: true, showStars: false },
+            { id: 3, img: "img/imagen3.png", theme: "rojo", isCover: true, showStars: false },
+            { id: 4, img: "img/imagen4.png", theme: "amarillo", isCover: true, showStars: false },
+            { id: 5, img: "img/imagen5.png", theme: "verde", isCover: true, showStars: false },
             
-            // Los siguientes sí tienen título, descripción y usan la carpeta img/
-            { id: 2, title: "Vestirse", caption: "Vestirse", desc: "Elijo mi ropa.", img: "img/imagen2.png", emoji: "👕", theme: "rojo", showStars: false },
-            { id: 3, title: "Desayunar", caption: "Desayunar", desc: "Como despacio.", img: "img/imagen3.png", emoji: "🥣", theme: "verde", showStars: false },
-            { id: 4, title: "Lavarse", caption: "Lavarse los dientes", desc: "Cepillo mis dientes.", img: "img/imagen4.png", emoji: "🪥", theme: "rojo", showStars: false },
-            { id: 5, title: "Escuela", caption: "Ir a la escuela", desc: "Tomo mi mochila.", img: "img/imagen5.png", emoji: "🎒", theme: "amarillo", showStars: false },
+            // Imagen 6: Diseño específico rojizo claro que resalta el texto
+            { id: 6, title: "COSAS QUE NO DEBO HACER", caption: "¿QUÉ NO DEBO HACER?", desc: "Miro estas reglas y las practico todos los días", img: "img/imagen6.png", emoji: "🛑", theme: "rojizo", isCover: false, showStars: true },
             
-            // A partir del 6 CON estrellas (showStars: true)
-            { id: 6, title: "Hola", caption: "Hola", desc: "Saludo a las personas.", img: "img/imagen6.png", emoji: "👋", theme: "verde", showStars: true },
-            { id: 7, title: "Por favor", caption: "Por favor", desc: "Pido con amabilidad.", img: "img/imagen7.png", emoji: "🙏", theme: "rojo", showStars: true },
-            { id: 8, title: "Gracias", caption: "Gracias", desc: "Agradezco la ayuda.", img: "img/imagen8.png", emoji: "🫂", theme: "amarillo", showStars: true }
+            // Imágenes 7 al 20: Tienen título, descripción y sistema de estrellas
+            { id: 7, title: "No pego", caption: "Manos quietas", desc: "Uso mis manos para jugar bonito.", img: "img/imagen7.png", emoji: "✋", theme: "rojo", isCover: false, showStars: true },
+            { id: 8, title: "No grito", caption: "Voz baja", desc: "Hablo con voz tranquila en el aula.", img: "img/imagen8.png", emoji: "🗣️", theme: "amarillo", isCover: false, showStars: true },
+            { id: 9, title: "No escupo", caption: "Boca limpia", desc: "Mi saliva se queda en mi boca.", img: "img/imagen9.png", emoji: "👄", theme: "verde", isCover: false, showStars: true },
+            { id: 10, title: "No empujo", caption: "Espero", desc: "Respeto el espacio de mis amigos.", img: "img/imagen10.png", emoji: "🚶", theme: "rojo", isCover: false, showStars: true },
+            { id: 11, title: "No tiro objetos", caption: "Cuido", desc: "Los juguetes se quedan en la mesa o el piso.", img: "img/imagen11.png", emoji: "🧸", theme: "amarillo", isCover: false, showStars: true },
+            { id: 12, title: "No corro", caption: "Despacio", desc: "Camino tranquilo dentro del salón.", img: "img/imagen12.png", emoji: "🚶", theme: "verde", isCover: false, showStars: true },
+            { id: 13, title: "No rompo materiales", caption: "Cuido mis cosas", desc: "Trato bien mis cuadernos y colores.", img: "img/imagen13.png", emoji: "🖍️", theme: "rojo", isCover: false, showStars: true },
+            { id: 14, title: "No molesto", caption: "Buen amigo", desc: "Juego bonito con mis compañeros.", img: "img/imagen14.png", emoji: "🫂", theme: "amarillo", isCover: false, showStars: true },
+            { id: 15, title: "No hago berrinche", caption: "Me calmo", desc: "Respiro profundo cuando me enojo.", img: "img/imagen15.png", emoji: "🧘", theme: "verde", isCover: false, showStars: true },
+            { id: 16, title: "Escucho", caption: "Presto atención", desc: "Escucho a mi profesora.", img: "img/imagen16.png", emoji: "👂", theme: "amarillo", isCover: false, showStars: true },
+            { id: 17, title: "Sigo indicaciones", caption: "Hago caso", desc: "Sigo las reglas con alegría.", img: "img/imagen17.png", emoji: "✅", theme: "verde", isCover: false, showStars: true },
+            { id: 18, title: "Respeto", caption: "Soy amable", desc: "Digo por favor y gracias.", img: "img/imagen18.png", emoji: "🙏", theme: "rojo", isCover: false, showStars: true },
+            { id: 19, title: "Comparto", caption: "Juego juntos", desc: "Comparto mis juguetes.", img: "img/imagen19.png", emoji: "🤝", theme: "amarillo", isCover: false, showStars: true },
+            { id: 20, title: "Sonrío", caption: "Estoy feliz", desc: "Disfruto mi día en la escuela.", img: "img/imagen20.png", emoji: "😊", theme: "verde", isCover: false, showStars: true }
         ];
  
         const PRAISE_MESSAGES = ["¡Perfecto! 🌟", "¡Magnífico! 🎉", "¡Muy bien! 👏"];
@@ -255,11 +276,20 @@
             const theme = themes[item.theme] || themes.amarillo; 
             
             slide.className = `slide ${directionClass}`;
-            slide.style.borderColor = `#${theme.bg}`;
+            
+            // Si es el tema rojizo (imagen 6), pintamos el fondo del contenedor de rojo
+            if (item.theme === 'rojizo') {
+                slide.style.backgroundColor = `#${theme.bg}`;
+                slide.style.borderColor = `#${theme.text}`;
+            } else {
+                slide.style.backgroundColor = `white`;
+                slide.style.borderColor = `#${theme.bg}`;
+            }
 
-            // Si es la portada, centra el contenido
             if (item.isCover) {
                 slide.style.justifyContent = 'center';
+                slide.style.padding = '0';
+                slide.style.borderWidth = '0';
             }
  
             const pictureHTML = item.img
@@ -269,23 +299,24 @@
             let slideHTML = '';
 
             if (item.isCover) {
-                // Diseño exclusivo para la portada: Solo la imagen ocupando el centro
                 slideHTML = `
-                    <div class="pic-frame" style="background-color:#${theme.bg}55; border-color:#${theme.bg}; border-width:0; box-shadow: none;">
+                    <div class="pic-frame" style="background-color:transparent; border:none; padding:0; height:100%; width:100%; box-shadow: none;">
                         ${pictureHTML}
                     </div>
                 `;
             } else {
-                // Diseño normal para los demás pictogramas
+                // Para el tema rojizo, hacemos que los cuadros internos sean blancos para crear contraste
+                const innerBg = item.theme === 'rojizo' ? 'FFFFFF' : `${theme.bg}44`;
+
                 slideHTML = `
-                    <div class="pic-title" style="background-color:#${theme.bg}; border-color:#${theme.text}; color:#${theme.text};">
+                    <div class="pic-title" style="background-color:#${item.theme === 'rojizo' ? 'FFFFFF' : theme.bg}; border-color:#${theme.text}; color:#${theme.text};">
                         ${item.title}
                     </div>
-                    <div class="pic-frame" style="background-color:#${theme.bg}55; border-color:#${theme.bg};">
+                    <div class="pic-frame" style="background-color:#${innerBg}; border-color:#${item.theme === 'rojizo' ? theme.text : theme.bg};">
                         ${pictureHTML}
                         <div class="pic-caption" style="color:#${theme.text};">${item.caption}</div>
                     </div>
-                    <div class="pic-desc" style="background-color:#${theme.bg}55; border-color:#${theme.bg}; color:#${theme.text};">
+                    <div class="pic-desc" style="background-color:#${innerBg}; border-color:#${item.theme === 'rojizo' ? theme.text : theme.bg}; color:#${theme.text};">
                         ${item.desc}
                     </div>
                 `;
@@ -314,7 +345,7 @@
             dotsContainer.innerHTML = '';
             pictograms.forEach((_, index) => {
                 const dot = document.createElement('div');
-                dot.className = `w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-blue-400 scale-125' : 'bg-gray-200'}`;
+                dot.className = `w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-blue-500 scale-125' : 'bg-gray-300'}`;
                 dotsContainer.appendChild(dot);
             });
         }
