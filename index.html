@@ -40,7 +40,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.4s ease;
             opacity: 0;
             transform: translateX(100%) scale(0.95);
             display: flex;
@@ -161,6 +161,22 @@
         .name-input:focus { border-color: #22C55E; background: #DCFCE7; }
         
         #touch-area { transition: max-width 0.5s ease, height 0.5s ease; }
+
+        /* NUEVAS ANIMACIONES PARA LAS EMOCIONES */
+        @keyframes bounce-custom { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-25%); } }
+        .animate-bounce-custom { animation: bounce-custom 0.6s infinite; }
+
+        @keyframes shake-fast { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-15px); } 75% { transform: translateX(15px); } }
+        .animate-shake-fast { animation: shake-fast 0.2s infinite; }
+
+        @keyframes droop { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(15px) scale(0.9); } }
+        .animate-droop { animation: droop 2s infinite ease-in-out; }
+
+        @keyframes wobble-custom { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-15deg); } 75% { transform: rotate(15deg); } }
+        .animate-wobble-custom { animation: wobble-custom 0.4s infinite ease-in-out; }
+
+        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        .animate-breathe { animation: breathe 2.5s infinite ease-in-out; }
     </style>
 </head>
 <body class="h-screen w-screen flex flex-col items-center justify-center p-2 sm:p-4">
@@ -200,21 +216,21 @@
             verde: { bg: 'BBF7D0', text: '15803D' },
             rojizo: { bg: 'FFE4E6', text: 'BE123C' },
             verdoso: { bg: 'DCFCE7', text: '166534' },
-            // Nuevos colores claros y amigables (excluyendo rojo, amarillo, verde)
             celeste: { bg: 'E0F2FE', text: '0369A1' },
             lila: { bg: 'F3E8FF', text: '7E22CE' },
             rosado: { bg: 'FCE7F3', text: 'BE185D' }
         };
 
         const pictograms = [
-            // 1 al 5
             { id: 1, img: "img/imagen1.png", theme: "amarillo", isCover: true, showStars: false, sound: "sonidos/audio1.mp3" },
             { id: 2, img: "img/imagen2.png", theme: "verde", isCover: true, showStars: false, needsNameInput: true, userName: "", sound: "sonidos/audio2.mp3" },
             { id: 3, img: "img/imagen3.png", theme: "rojo", isCover: true, showStars: false, sound: "sonidos/audio3.mp3" },
-            { id: 4, topTitle: "Mis emociones", img: "img/imagen4.png", theme: "amarillo", isCover: true, showStars: false, smallImage: true, sound: "sonidos/audio4.mp3" },
+            
+            // PICTROGRAMA 4: Convertido en panel de emociones interactivo
+            { id: 4, topTitle: "¿Cómo me siento?", theme: "celeste", isCover: true, showStars: false, isEmotionsBoard: true },
+            
             { id: 5, topTitle: "Mis emociones", theme: "verde", isCover: true, showStars: false, isTrafficLight: true, sound: "sonidos/audio5.mp3" },
             
-            // 6 al 15: FONDO ROJO
             { id: 6, title: "COSAS QUE NO DEBO HACER", caption: "¿QUÉ NO DEBO HACER?", desc: "Miro estas reglas y las practico todos los días", img: "img/imagen6.png", emoji: "🛑", theme: "rojizo", fullBg: true, isCover: false, showStars: true, largeLayout: true, rating: 0, sound: "sonidos/audio6.mp3" },
             { id: 7, title: "No pego", caption: "Manos quietas", desc: "Uso mis manos para jugar bonito.", img: "img/imagen7.png", emoji: "✋", theme: "rojizo", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio7.mp3" },
             { id: 8, title: "No grito", caption: "Voz baja", desc: "Hablo con voz tranquila en el aula.", img: "img/imagen8.png", emoji: "🗣️", theme: "rojizo", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio8.mp3" },
@@ -226,7 +242,6 @@
             { id: 14, title: "No molesto", caption: "Buen amigo", desc: "Juego bonito con mis compañeros.", img: "img/imagen14.png", emoji: "🫂", theme: "rojizo", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio14.mp3" },
             { id: 15, title: "No hago berrinche", caption: "Me calmo", desc: "Respiro profundo cuando me enojo.", img: "img/imagen15.png", emoji: "🧘", theme: "rojizo", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio15.mp3" },
             
-            // 16 al 21: FONDO VERDE 
             { id: 16, img: "img/imagen16.png", theme: "verdoso", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio16.mp3" },
             { id: 17, title: "Sigo indicaciones", caption: "Hago caso", desc: "Sigo las reglas con alegría.", img: "img/imagen17.png", emoji: "✅", theme: "verdoso", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio17.mp3" },
             { id: 18, title: "Respeto", caption: "Soy amable", desc: "Digo por favor y gracias.", img: "img/imagen18.png", emoji: "🙏", theme: "verdoso", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio18.mp3" },
@@ -234,10 +249,7 @@
             { id: 20, title: "Sonrío", caption: "Estoy feliz", desc: "Disfruto mi día en la escuela.", img: "img/imagen20.png", emoji: "😊", theme: "verdoso", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio20.mp3" },
             { id: 21, title: "Levanto la mano", caption: "Para hablar", desc: "Espero mi turno para participar.", img: "img/imagen21.png", emoji: "🙋", theme: "verdoso", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio21.mp3" },
             
-            // 22 (Se mantiene con fondo verdoso como indicaste antes)
             { id: 22, img: "img/imagen22.png", theme: "verdoso", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio22.mp3" },
-            
-            // 23 al 32: SOLO IMÁGENES CON NUEVOS FONDOS CLAROS (Celeste, Lila, Rosado)
             { id: 23, img: "img/imagen23.png", theme: "celeste", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio23.mp3" },
             { id: 24, img: "img/imagen24.png", theme: "lila", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio24.mp3" },
             { id: 25, img: "img/imagen25.png", theme: "rosado", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio25.mp3" },
@@ -246,8 +258,6 @@
             { id: 28, img: "img/imagen28.png", theme: "rosado", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio28.mp3" },
             { id: 29, img: "img/imagen29.png", theme: "celeste", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio29.mp3" },
             { id: 30, img: "img/imagen30.png", theme: "lila", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio30.mp3" },
-            
-            // Los 2 nuevos pictogramas agregados (31 y 32)
             { id: 31, img: "img/imagen31.png", theme: "rosado", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio31.mp3" },
             { id: 32, img: "img/imagen32.png", theme: "celeste", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio32.mp3" }
         ];
@@ -276,23 +286,16 @@
         function buildStars(item, starsWrap) {
             starsWrap.innerHTML = '';
             let current = item.rating || 0; 
-            
             function render() {
-                Array.from(starsWrap.children).forEach((btn, idx) => {
-                    btn.classList.toggle('filled', idx < current);
-                });
+                Array.from(starsWrap.children).forEach((btn, idx) => { btn.classList.toggle('filled', idx < current); });
             }
-            
             for (let i = 1; i <= 5; i++) {
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = 'star-btn';
-                btn.setAttribute('aria-label', `Calificar ${i} estrellas`);
                 btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.7-4.9 4.5 1.3 6.6L12 16.9l-5.9 3.5 1.3-6.6-4.9-4.5 6.6-.7z" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
                 btn.addEventListener('click', () => {
-                    current = i;
-                    item.rating = current; 
-                    render();
+                    current = i; item.rating = current; render();
                     if (current === 5) showPraise();
                 });
                 starsWrap.appendChild(btn);
@@ -313,11 +316,84 @@
                 slide.style.backgroundColor = `white`;
                 slide.style.borderColor = `#${theme.bg}`;
             }
-
-            if (item.isCover) {
-                slide.style.borderWidth = '0';
-            }
+            if (item.isCover) { slide.style.borderWidth = '0'; }
  
+            // NUEVO: Lógica del Panel Interactivo de Emociones (Pictograma 4)
+            if (item.isEmotionsBoard) {
+                const emotions = [
+                    { id: 'emo-feliz', text: 'Feliz', emoji: '😊', bgColor: '#BBF7D0', borderColor: '#22C55E', textCol: '#14532D', animClass: 'animate-bounce-custom', sound: 'sonidos/emo_feliz.mp3' },
+                    { id: 'emo-triste', text: 'Triste', emoji: '😢', bgColor: '#BFDBFE', borderColor: '#3B82F6', textCol: '#1E3A8A', animClass: 'animate-droop', sound: 'sonidos/emo_triste.mp3' },
+                    { id: 'emo-enojado', text: 'Enojado', emoji: '😡', bgColor: '#FECACA', borderColor: '#EF4444', textCol: '#7F1D1D', animClass: 'animate-shake-fast', sound: 'sonidos/emo_enojado.mp3' },
+                    { id: 'emo-preocupado', text: 'Preocupado', emoji: '😟', bgColor: '#E9D5FF', borderColor: '#A855F7', textCol: '#581C87', animClass: 'animate-wobble-custom', sound: 'sonidos/emo_preocupado.mp3' },
+                    { id: 'emo-tranquilo', text: 'Tranquilo', emoji: '😌', bgColor: '#FEF08A', borderColor: '#EAB308', textCol: '#713F12', animClass: 'animate-breathe', sound: 'sonidos/emo_tranquilo.mp3' }
+                ];
+
+                let slideHTML = `<div class="pic-frame w-full h-full" style="background-color:transparent; border:none; padding:1rem; box-shadow: none; display: flex; flex-direction: column; justify-content: space-between; align-items: center;">`;
+                
+                if (item.topTitle) {
+                    slideHTML += `<h2 class="text-3xl sm:text-5xl font-extrabold text-center mt-2" style="color: #${theme.text};">${item.topTitle}</h2>`;
+                }
+
+                // Visor Central Grande
+                slideHTML += `
+                    <div id="big-emotion-display" class="flex-1 flex items-center justify-center text-[8rem] sm:text-[11rem] drop-shadow-xl my-4">
+                        🤔
+                    </div>
+                `;
+
+                // Botones de las 5 emociones
+                slideHTML += `<div class="grid grid-cols-5 gap-1.5 sm:gap-3 w-full max-w-3xl h-32 sm:h-40">`;
+                emotions.forEach(emo => {
+                    slideHTML += `
+                        <button class="emotion-btn flex flex-col items-center justify-center rounded-xl sm:rounded-2xl border-[3px] sm:border-4 transition-transform active:scale-90 shadow-md" 
+                                style="background-color: ${emo.bgColor}; border-color: ${emo.borderColor};"
+                                data-emoji="${emo.emoji}" data-anim="${emo.animClass}" data-bg="${emo.bgColor}" data-sound="${emo.sound}">
+                            <div class="text-3xl sm:text-5xl md:text-6xl mb-1 sm:mb-2 drop-shadow-sm">${emo.emoji}</div>
+                            <div class="font-extrabold text-[0.6rem] sm:text-sm md:text-base uppercase tracking-tight sm:tracking-wide" style="color: ${emo.textCol};">${emo.text}</div>
+                        </button>
+                    `;
+                });
+                slideHTML += `</div></div>`;
+                slide.innerHTML = slideHTML;
+
+                const emotionBtns = slide.querySelectorAll('.emotion-btn');
+                const bigDisplay = slide.querySelector('#big-emotion-display');
+                const originalBg = slide.style.backgroundColor;
+                slide.style.transition = 'background-color 0.5s ease, transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)'; 
+
+                let revertTimeout;
+
+                emotionBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const emoji = this.getAttribute('data-emoji');
+                        const animClass = this.getAttribute('data-anim');
+                        const bgColor = this.getAttribute('data-bg');
+                        const soundFile = this.getAttribute('data-sound');
+                        
+                        // 1. Cambiar Emoji y reiniciar clases de animación
+                        bigDisplay.innerHTML = emoji;
+                        bigDisplay.className = `flex-1 flex items-center justify-center text-[8rem] sm:text-[11rem] drop-shadow-xl my-4 ${animClass}`;
+                        
+                        // 2. Cambiar color de fondo
+                        slide.style.backgroundColor = bgColor;
+                        
+                        // 3. Reproducir audio
+                        if(currentAudio) currentAudio.pause();
+                        currentAudio = new Audio(soundFile);
+                        currentAudio.play().catch(e => console.log('Audio no encontrado: ' + soundFile));
+                        
+                        // 4. Volver al estado normal después de 3 segundos
+                        clearTimeout(revertTimeout);
+                        revertTimeout = setTimeout(() => {
+                            slide.style.backgroundColor = originalBg;
+                            bigDisplay.className = `flex-1 flex items-center justify-center text-[8rem] sm:text-[11rem] drop-shadow-xl my-4`;
+                            bigDisplay.innerHTML = '🤔';
+                        }, 3000);
+                    });
+                });
+                return slide;
+            }
+
             if (item.isTrafficLight) {
                 const btnsConfig = [
                     { id: 'btn-verde', baseColor: '#4CAF50', bgColor: '#E8F5E9', borderColor: '#4CAF50', title: 'VERDE', text: 'Estoy tranquilo. Puedo aprender.', sound: 'sonidos/sonido_verde.mp3', flashColor: '#BBEAA6' },
@@ -326,10 +402,7 @@
                 ];
 
                 let slideHTML = `<div class="pic-frame" style="background-color:transparent; border:none; padding:0 1rem; height:100%; width:100%; box-shadow: none; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1rem;">`;
-                
-                if (item.topTitle) {
-                    slideHTML += `<h2 class="text-3xl sm:text-5xl font-extrabold text-center mb-2" style="color: #${theme.text}; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">${item.topTitle}</h2>`;
-                }
+                if (item.topTitle) { slideHTML += `<h2 class="text-3xl sm:text-5xl font-extrabold text-center mb-2" style="color: #${theme.text};">${item.topTitle}</h2>`; }
 
                 btnsConfig.forEach(btn => {
                     slideHTML += `
@@ -341,10 +414,8 @@
                             <div class="font-extrabold text-2xl tracking-wide uppercase" style="color: #111827;">${btn.title}</div>
                             <div class="font-bold text-sm sm:text-base text-gray-800 leading-tight mt-0.5">${btn.text}</div>
                         </div>
-                    </button>
-                    `;
+                    </button>`;
                 });
-
                 slideHTML += `</div>`;
                 slide.innerHTML = slideHTML;
 
@@ -356,49 +427,30 @@
                     btn.addEventListener('click', function() {
                         const flashColor = this.getAttribute('data-flash');
                         const soundFile = this.getAttribute('data-sound');
-                        
                         slide.style.backgroundColor = flashColor;
-                        
                         if(currentAudio) currentAudio.pause();
-                        
                         currentAudio = new Audio(soundFile);
-                        currentAudio.play().catch(e => console.log('Aún no has agregado el archivo: ' + soundFile));
-                        
-                        setTimeout(() => {
-                            slide.style.backgroundColor = originalBg;
-                        }, 1600);
+                        currentAudio.play().catch(e => console.log('Audio no encontrado: ' + soundFile));
+                        setTimeout(() => { slide.style.backgroundColor = originalBg; }, 1600);
                     });
                 });
-
                 return slide;
             }
 
             let imgStyles = "border-radius: 0.5rem;";
-            if (item.smallImage) {
-                imgStyles += " max-height: 55%; width: auto; object-fit: contain; margin: 0 auto;";
-            } else {
-                imgStyles += " width: 100%; height: 100%; max-height: 100%; object-fit: contain;";
-            }
+            if (item.smallImage) { imgStyles += " max-height: 55%; width: auto; object-fit: contain; margin: 0 auto;"; } 
+            else { imgStyles += " width: 100%; height: 100%; max-height: 100%; object-fit: contain;"; }
 
             const pictureHTML = item.img
                 ? `<img src="${item.img}" style="${imgStyles}" alt="${item.caption || 'Imagen'}" onerror="this.outerHTML='<span class=\\'emoji\\' style=\\'user-select: none;\\'>${item.emoji || '🖼️'}</span>'">`
                 : `<span class="emoji" style="user-select: none;">${item.emoji || '🖼️'}</span>`;
 
             let slideHTML = '';
-
             if (item.isCover) {
                 slideHTML = `<div class="pic-frame" style="background-color:transparent; border:none; padding:1rem; height:100%; width:100%; box-shadow: none; display: flex; flex-direction: column; justify-content: center; align-items: center;">`;
-                
-                if (item.topTitle) {
-                    slideHTML += `<h2 class="text-3xl sm:text-5xl font-extrabold text-center mb-6" style="color: #${theme.text}; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">${item.topTitle}</h2>`;
-                }
-
+                if (item.topTitle) { slideHTML += `<h2 class="text-3xl sm:text-5xl font-extrabold text-center mb-6" style="color: #${theme.text};">${item.topTitle}</h2>`; }
                 slideHTML += pictureHTML;
-
-                if (item.needsNameInput) {
-                    slideHTML += `<input type="text" class="name-input" placeholder="Escribe tu nombre aquí" value="${item.userName || ''}">`;
-                }
-
+                if (item.needsNameInput) { slideHTML += `<input type="text" class="name-input" placeholder="Escribe tu nombre aquí" value="${item.userName || ''}">`; }
                 slideHTML += `</div>`;
             } else {
                 const innerBg = item.fullBg ? 'FFFFFF' : `${theme.bg}44`;
@@ -406,44 +458,27 @@
                 const borderCol = item.fullBg ? theme.text : theme.bg;
 
                 slideHTML = `
-                    <div class="pic-title" style="background-color:#${titleBg}; border-color:#${theme.text}; color:#${theme.text};">
-                        ${item.title}
-                    </div>
+                    <div class="pic-title" style="background-color:#${titleBg}; border-color:#${theme.text}; color:#${theme.text};">${item.title}</div>
                     <div class="pic-frame" style="background-color:#${innerBg}; border-color:#${borderCol};">
                         ${pictureHTML}
                         ${item.caption ? `<div class="pic-caption" style="color:#${theme.text};">${item.caption}</div>` : ''}
                     </div>
-                    <div class="pic-desc" style="background-color:#${innerBg}; border-color:#${borderCol}; color:#${theme.text};">
-                        ${item.desc}
-                    </div>
+                    <div class="pic-desc" style="background-color:#${innerBg}; border-color:#${borderCol}; color:#${theme.text};">${item.desc}</div>
                 `;
-
                 if (item.showStars) {
-                    slideHTML += `
-                        <div class="pic-rating">
-                            <div class="rating-label">¡Lo estoy logrando!</div>
-                            <div class="stars-wrap flex items-center justify-center gap-1"></div>
-                        </div>
-                    `;
+                    slideHTML += `<div class="pic-rating"><div class="rating-label">¡Lo estoy logrando!</div><div class="stars-wrap flex items-center justify-center gap-1"></div></div>`;
                 }
             }
-
             slide.innerHTML = slideHTML;
  
             if (item.needsNameInput) {
                 const inputEl = slide.querySelector('.name-input');
-                if (inputEl) {
-                    inputEl.addEventListener('input', (e) => {
-                        item.userName = e.target.value;
-                    });
-                }
+                if (inputEl) { inputEl.addEventListener('input', (e) => { item.userName = e.target.value; }); }
             }
-
             if (item.showStars && !item.isCover) {
                 const starsWrap = slide.querySelector('.stars-wrap');
                 buildStars(item, starsWrap);
             }
- 
             return slide;
         }
  
@@ -460,7 +495,7 @@
             if (isAnimating || newIndex === currentIndex) return;
             isAnimating = true;
  
-            if (pictograms[newIndex].largeLayout) {
+            if (pictograms[newIndex].largeLayout || pictograms[newIndex].isEmotionsBoard) {
                 touchAreaEl.classList.remove('max-w-xl', 'sm:max-w-2xl');
                 touchAreaEl.classList.add('max-w-3xl', 'sm:max-w-5xl');
                 touchAreaEl.style.height = 'min(92vh, 950px)';
@@ -491,13 +526,11 @@
             currentIndex = newIndex;
             updateDots();
  
-            if (currentAudio) {
-                currentAudio.pause();
-            }
+            if (currentAudio) { currentAudio.pause(); }
             
-            if (pictograms[newIndex].sound && !pictograms[newIndex].isTrafficLight) {
+            if (pictograms[newIndex].sound && !pictograms[newIndex].isTrafficLight && !pictograms[newIndex].isEmotionsBoard) {
                 currentAudio = new Audio(pictograms[newIndex].sound);
-                currentAudio.play().catch(e => console.log('El audio ' + pictograms[newIndex].sound + ' no fue encontrado.'));
+                currentAudio.play().catch(e => console.log('El audio no fue encontrado.'));
             }
 
             setTimeout(() => {
@@ -506,28 +539,18 @@
             }, 600);
         }
  
-        function nextSlide() {
-            const nextIndex = (currentIndex + 1) % pictograms.length;
-            goToSlide(nextIndex, 'next');
-        }
- 
-        function prevSlide() {
-            const prevIndex = (currentIndex - 1 + pictograms.length) % pictograms.length;
-            goToSlide(prevIndex, 'prev');
-        }
+        function nextSlide() { goToSlide((currentIndex + 1) % pictograms.length, 'next'); }
+        function prevSlide() { goToSlide((currentIndex - 1 + pictograms.length) % pictograms.length, 'prev'); }
  
         nextBtn.addEventListener('click', nextSlide);
         prevBtn.addEventListener('click', prevSlide);
  
-        let touchStartX = 0;
-        let touchEndX = 0;
- 
+        let touchStartX = 0; let touchEndX = 0;
         touchAreaEl.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
         touchAreaEl.addEventListener('touchend', (e) => {
             touchEndX = e.changedTouches[0].screenX;
-            const swipeThreshold = 50;
-            if (touchEndX < touchStartX - swipeThreshold) nextSlide();
-            if (touchEndX > touchStartX + swipeThreshold) prevSlide();
+            if (touchEndX < touchStartX - 50) nextSlide();
+            if (touchEndX > touchStartX + 50) prevSlide();
         }, { passive: true });
  
         const initialSlide = createSlideElement(pictograms[0], 'active');
