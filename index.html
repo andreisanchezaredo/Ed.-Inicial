@@ -199,7 +199,11 @@
             amarillo: { bg: 'FEF08A', text: 'A16207' },
             verde: { bg: 'BBF7D0', text: '15803D' },
             rojizo: { bg: 'FFE4E6', text: 'BE123C' },
-            verdoso: { bg: 'DCFCE7', text: '166534' }
+            verdoso: { bg: 'DCFCE7', text: '166534' },
+            // Nuevos colores claros y amigables (excluyendo rojo, amarillo, verde)
+            celeste: { bg: 'E0F2FE', text: '0369A1' },
+            lila: { bg: 'F3E8FF', text: '7E22CE' },
+            rosado: { bg: 'FCE7F3', text: 'BE185D' }
         };
 
         const pictograms = [
@@ -222,7 +226,7 @@
             { id: 14, title: "No molesto", caption: "Buen amigo", desc: "Juego bonito con mis compañeros.", img: "img/imagen14.png", emoji: "🫂", theme: "rojizo", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio14.mp3" },
             { id: 15, title: "No hago berrinche", caption: "Me calmo", desc: "Respiro profundo cuando me enojo.", img: "img/imagen15.png", emoji: "🧘", theme: "rojizo", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio15.mp3" },
             
-            // 16 al 21: FONDO VERDE (La 16 es cover, las demás normales)
+            // 16 al 21: FONDO VERDE 
             { id: 16, img: "img/imagen16.png", theme: "verdoso", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio16.mp3" },
             { id: 17, title: "Sigo indicaciones", caption: "Hago caso", desc: "Sigo las reglas con alegría.", img: "img/imagen17.png", emoji: "✅", theme: "verdoso", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio17.mp3" },
             { id: 18, title: "Respeto", caption: "Soy amable", desc: "Digo por favor y gracias.", img: "img/imagen18.png", emoji: "🙏", theme: "verdoso", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio18.mp3" },
@@ -230,16 +234,22 @@
             { id: 20, title: "Sonrío", caption: "Estoy feliz", desc: "Disfruto mi día en la escuela.", img: "img/imagen20.png", emoji: "😊", theme: "verdoso", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio20.mp3" },
             { id: 21, title: "Levanto la mano", caption: "Para hablar", desc: "Espero mi turno para participar.", img: "img/imagen21.png", emoji: "🙋", theme: "verdoso", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio21.mp3" },
             
-            // 22 al 30: SOLO IMÁGENES (isCover = true, showStars = false)
+            // 22 (Se mantiene con fondo verdoso como indicaste antes)
             { id: 22, img: "img/imagen22.png", theme: "verdoso", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio22.mp3" },
-            { id: 23, img: "img/imagen23.png", theme: "verdoso", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio23.mp3" },
-            { id: 24, img: "img/imagen24.png", theme: "rojo", isCover: true, showStars: false, sound: "sonidos/audio24.mp3" },
-            { id: 25, img: "img/imagen25.png", theme: "amarillo", isCover: true, showStars: false, sound: "sonidos/audio25.mp3" },
-            { id: 26, img: "img/imagen26.png", theme: "verde", isCover: true, showStars: false, sound: "sonidos/audio26.mp3" },
-            { id: 27, img: "img/imagen27.png", theme: "rojo", isCover: true, showStars: false, sound: "sonidos/audio27.mp3" },
-            { id: 28, img: "img/imagen28.png", theme: "amarillo", isCover: true, showStars: false, sound: "sonidos/audio28.mp3" },
-            { id: 29, img: "img/imagen29.png", theme: "verde", isCover: true, showStars: false, sound: "sonidos/audio29.mp3" },
-            { id: 30, img: "img/imagen30.png", theme: "rojo", isCover: true, showStars: false, sound: "sonidos/audio30.mp3" }
+            
+            // 23 al 32: SOLO IMÁGENES CON NUEVOS FONDOS CLAROS (Celeste, Lila, Rosado)
+            { id: 23, img: "img/imagen23.png", theme: "celeste", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio23.mp3" },
+            { id: 24, img: "img/imagen24.png", theme: "lila", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio24.mp3" },
+            { id: 25, img: "img/imagen25.png", theme: "rosado", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio25.mp3" },
+            { id: 26, img: "img/imagen26.png", theme: "celeste", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio26.mp3" },
+            { id: 27, img: "img/imagen27.png", theme: "lila", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio27.mp3" },
+            { id: 28, img: "img/imagen28.png", theme: "rosado", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio28.mp3" },
+            { id: 29, img: "img/imagen29.png", theme: "celeste", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio29.mp3" },
+            { id: 30, img: "img/imagen30.png", theme: "lila", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio30.mp3" },
+            
+            // Los 2 nuevos pictogramas agregados (31 y 32)
+            { id: 31, img: "img/imagen31.png", theme: "rosado", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio31.mp3" },
+            { id: 32, img: "img/imagen32.png", theme: "celeste", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio32.mp3" }
         ];
  
         const PRAISE_MESSAGES = ["¡Perfecto! 🌟", "¡Magnífico! 🎉", "¡Muy bien! 👏"];
@@ -292,7 +302,7 @@
  
         function createSlideElement(item, directionClass = 'enter-right') {
             const slide = document.createElement('div');
-            const theme = themes[item.theme] || themes.amarillo; 
+            const theme = themes[item.theme] || themes.celeste; 
             
             slide.className = `slide ${directionClass}`;
             
@@ -441,7 +451,7 @@
             dotsContainer.innerHTML = '';
             pictograms.forEach((_, index) => {
                 const dot = document.createElement('div');
-                dot.className = `w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-blue-500 scale-150' : 'bg-gray-300'}`;
+                dot.className = `w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-blue-500 scale-150' : 'bg-gray-300'}`;
                 dotsContainer.appendChild(dot);
             });
         }
