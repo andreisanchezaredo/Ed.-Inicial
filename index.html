@@ -198,50 +198,57 @@
             rojo: { bg: 'FECACA', text: 'B91C1C' },
             amarillo: { bg: 'FEF08A', text: 'A16207' },
             verde: { bg: 'BBF7D0', text: '15803D' },
-            rojizo: { bg: 'FFE4E6', text: 'BE123C' } 
+            rojizo: { bg: 'FFE4E6', text: 'BE123C' }, // Fondo rojo completo
+            verdoso: { bg: 'DCFCE7', text: '166534' } // Fondo verde completo
         };
 
         const pictograms = [
-            { id: 1, img: "img/imagen1.png", theme: "amarillo", isCover: true, showStars: false },
-            { id: 2, img: "img/imagen2.png", theme: "verde", isCover: true, showStars: false, needsNameInput: true, userName: "" },
-            { id: 3, img: "img/imagen3.png", theme: "rojo", isCover: true, showStars: false },
-            { id: 4, topTitle: "Mis emociones", img: "img/imagen4.png", theme: "amarillo", isCover: true, showStars: false, smallImage: true },
-            { id: 5, topTitle: "Mis emociones", theme: "verde", isCover: true, showStars: false, isTrafficLight: true },
-            { id: 6, title: "COSAS QUE NO DEBO HACER", caption: "¿QUÉ NO DEBO HACER?", desc: "Miro estas reglas y las practico todos los días", img: "img/imagen6.png", emoji: "🛑", theme: "rojizo", isCover: false, showStars: true, largeLayout: true, rating: 0 },
-            { id: 7, title: "No pego", caption: "Manos quietas", desc: "Uso mis manos para jugar bonito.", img: "img/imagen7.png", emoji: "✋", theme: "rojo", isCover: false, showStars: true, rating: 0 },
-            { id: 8, title: "No grito", caption: "Voz baja", desc: "Hablo con voz tranquila en el aula.", img: "img/imagen8.png", emoji: "🗣️", theme: "amarillo", isCover: false, showStars: true, rating: 0 },
-            { id: 9, title: "No escupo", caption: "Boca limpia", desc: "Mi saliva se queda en mi boca.", img: "img/imagen9.png", emoji: "👄", theme: "verde", isCover: false, showStars: true, rating: 0 },
-            { id: 10, title: "No empujo", caption: "Espero", desc: "Respeto el espacio de mis amigos.", img: "img/imagen10.png", emoji: "🚶", theme: "rojo", isCover: false, showStars: true, rating: 0 },
-            { id: 11, title: "No tiro objetos", caption: "Cuido", desc: "Los juguetes se quedan en la mesa o el piso.", img: "img/imagen11.png", emoji: "🧸", theme: "amarillo", isCover: false, showStars: true, rating: 0 },
-            { id: 12, title: "No corro", caption: "Despacio", desc: "Camino tranquilo dentro del salón.", img: "img/imagen12.png", emoji: "🚶", theme: "verde", isCover: false, showStars: true, rating: 0 },
-            { id: 13, title: "No rompo materiales", caption: "Cuido mis cosas", desc: "Trato bien mis cuadernos y colores.", img: "img/imagen13.png", emoji: "🖍️", theme: "rojo", isCover: false, showStars: true, rating: 0 },
-            { id: 14, title: "No molesto", caption: "Buen amigo", desc: "Juego bonito con mis compañeros.", img: "img/imagen14.png", emoji: "🫂", theme: "amarillo", isCover: false, showStars: true, rating: 0 },
-            { id: 15, title: "No hago berrinche", caption: "Me calmo", desc: "Respiro profundo cuando me enojo.", img: "img/imagen15.png", emoji: "🧘", theme: "verde", isCover: false, showStars: true, rating: 0 },
+            // 1 al 5
+            { id: 1, img: "img/imagen1.png", theme: "amarillo", isCover: true, showStars: false, sound: "sonidos/audio1.mp3" },
+            { id: 2, img: "img/imagen2.png", theme: "verde", isCover: true, showStars: false, needsNameInput: true, userName: "", sound: "sonidos/audio2.mp3" },
+            { id: 3, img: "img/imagen3.png", theme: "rojo", isCover: true, showStars: false, sound: "sonidos/audio3.mp3" },
+            { id: 4, topTitle: "Mis emociones", img: "img/imagen4.png", theme: "amarillo", isCover: true, showStars: false, smallImage: true, sound: "sonidos/audio4.mp3" },
+            { id: 5, topTitle: "Mis emociones", theme: "verde", isCover: true, showStars: false, isTrafficLight: true, sound: "sonidos/audio5.mp3" },
             
-            // Modificación: Imagen 16 ahora es isCover (solo la imagen a pantalla completa)
-            { id: 16, img: "img/imagen16.png", theme: "amarillo", isCover: true, showStars: false },
+            // 6 al 15: FONDO ROJO (theme: "rojizo", fullBg: true)
+            { id: 6, title: "COSAS QUE NO DEBO HACER", caption: "¿QUÉ NO DEBO HACER?", desc: "Miro estas reglas y las practico todos los días", img: "img/imagen6.png", emoji: "🛑", theme: "rojizo", fullBg: true, isCover: false, showStars: true, largeLayout: true, rating: 0, sound: "sonidos/audio6.mp3" },
+            { id: 7, title: "No pego", caption: "Manos quietas", desc: "Uso mis manos para jugar bonito.", img: "img/imagen7.png", emoji: "✋", theme: "rojizo", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio7.mp3" },
+            { id: 8, title: "No grito", caption: "Voz baja", desc: "Hablo con voz tranquila en el aula.", img: "img/imagen8.png", emoji: "🗣️", theme: "rojizo", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio8.mp3" },
+            { id: 9, title: "No escupo", caption: "Boca limpia", desc: "Mi saliva se queda en mi boca.", img: "img/imagen9.png", emoji: "👄", theme: "rojizo", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio9.mp3" },
+            { id: 10, title: "No empujo", caption: "Espero", desc: "Respeto el espacio de mis amigos.", img: "img/imagen10.png", emoji: "🚶", theme: "rojizo", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio10.mp3" },
+            { id: 11, title: "No tiro objetos", caption: "Cuido", desc: "Los juguetes se quedan en la mesa o el piso.", img: "img/imagen11.png", emoji: "🧸", theme: "rojizo", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio11.mp3" },
+            { id: 12, title: "No corro", caption: "Despacio", desc: "Camino tranquilo dentro del salón.", img: "img/imagen12.png", emoji: "🚶", theme: "rojizo", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio12.mp3" },
+            { id: 13, title: "No rompo materiales", caption: "Cuido mis cosas", desc: "Trato bien mis cuadernos y colores.", img: "img/imagen13.png", emoji: "🖍️", theme: "rojizo", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio13.mp3" },
+            { id: 14, title: "No molesto", caption: "Buen amigo", desc: "Juego bonito con mis compañeros.", img: "img/imagen14.png", emoji: "🫂", theme: "rojizo", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio14.mp3" },
+            { id: 15, title: "No hago berrinche", caption: "Me calmo", desc: "Respiro profundo cuando me enojo.", img: "img/imagen15.png", emoji: "🧘", theme: "rojizo", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio15.mp3" },
             
-            { id: 17, title: "Sigo indicaciones", caption: "Hago caso", desc: "Sigo las reglas con alegría.", img: "img/imagen17.png", emoji: "✅", theme: "verde", isCover: false, showStars: true, rating: 0 },
-            { id: 18, title: "Respeto", caption: "Soy amable", desc: "Digo por favor y gracias.", img: "img/imagen18.png", emoji: "🙏", theme: "rojo", isCover: false, showStars: true, rating: 0 },
-            { id: 19, title: "Comparto", caption: "Juego juntos", desc: "Comparto mis juguetes.", img: "img/imagen19.png", emoji: "🤝", theme: "amarillo", isCover: false, showStars: true, rating: 0 },
-            { id: 20, title: "Sonrío", caption: "Estoy feliz", desc: "Disfruto mi día en la escuela.", img: "img/imagen20.png", emoji: "😊", theme: "verde", isCover: false, showStars: true, rating: 0 },
+            // 16 al 23: FONDO VERDE (theme: "verdoso", fullBg: true)
+            // La 16 es cover (solo imagen) pero con el fondo verde aplicado
+            { id: 16, img: "img/imagen16.png", theme: "verdoso", fullBg: true, isCover: true, showStars: false, sound: "sonidos/audio16.mp3" },
+            { id: 17, title: "Sigo indicaciones", caption: "Hago caso", desc: "Sigo las reglas con alegría.", img: "img/imagen17.png", emoji: "✅", theme: "verdoso", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio17.mp3" },
+            { id: 18, title: "Respeto", caption: "Soy amable", desc: "Digo por favor y gracias.", img: "img/imagen18.png", emoji: "🙏", theme: "verdoso", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio18.mp3" },
+            { id: 19, title: "Comparto", caption: "Juego juntos", desc: "Comparto mis juguetes.", img: "img/imagen19.png", emoji: "🤝", theme: "verdoso", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio19.mp3" },
+            { id: 20, title: "Sonrío", caption: "Estoy feliz", desc: "Disfruto mi día en la escuela.", img: "img/imagen20.png", emoji: "😊", theme: "verdoso", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio20.mp3" },
+            { id: 21, title: "Levanto la mano", caption: "Para hablar", desc: "Espero mi turno para participar.", img: "img/imagen21.png", emoji: "🙋", theme: "verdoso", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio21.mp3" },
+            { id: 22, title: "Pido permiso", caption: "Soy educado", desc: "Pregunto antes de levantarme.", img: "img/imagen22.png", emoji: "✋", theme: "verdoso", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio22.mp3" },
+            { id: 23, title: "Trabajo en silencio", caption: "Me concentro", desc: "Hago mis tareas sin hacer ruido.", img: "img/imagen23.png", emoji: "🤫", theme: "verdoso", fullBg: true, isCover: false, showStars: true, rating: 0, sound: "sonidos/audio23.mp3" },
             
-            // Nuevos pictogramas agregados del 21 al 30
-            { id: 21, title: "Levanto la mano", caption: "Para hablar", desc: "Espero mi turno para participar.", img: "img/imagen21.png", emoji: "🙋", theme: "rojo", isCover: false, showStars: true, rating: 0 },
-            { id: 22, title: "Pido permiso", caption: "Soy educado", desc: "Pregunto antes de levantarme.", img: "img/imagen22.png", emoji: "✋", theme: "amarillo", isCover: false, showStars: true, rating: 0 },
-            { id: 23, title: "Trabajo en silencio", caption: "Me concentro", desc: "Hago mis tareas sin hacer ruido.", img: "img/imagen23.png", emoji: "🤫", theme: "verde", isCover: false, showStars: true, rating: 0 },
-            { id: 24, title: "Ordeno mi lugar", caption: "Todo limpio", desc: "Guardo mis cosas al terminar.", img: "img/imagen24.png", emoji: "🧹", theme: "rojo", isCover: false, showStars: true, rating: 0 },
-            { id: 25, title: "Hago la fila", caption: "En orden", desc: "Me formo sin empujar a los demás.", img: "img/imagen25.png", emoji: "🚶‍♂️", theme: "amarillo", isCover: false, showStars: true, rating: 0 },
-            { id: 26, title: "Espero mi turno", caption: "Paciencia", desc: "Espero con calma a que me toque.", img: "img/imagen26.png", emoji: "⏳", theme: "verde", isCover: false, showStars: true, rating: 0 },
-            { id: 27, title: "Saludo al llegar", caption: "Buenos días", desc: "Digo buenos días a todos.", img: "img/imagen27.png", emoji: "👋", theme: "rojo", isCover: false, showStars: true, rating: 0 },
-            { id: 28, title: "Me despido", caption: "Hasta mañana", desc: "Digo adiós al irme a casa.", img: "img/imagen28.png", emoji: "👋", theme: "amarillo", isCover: false, showStars: true, rating: 0 },
-            { id: 29, title: "Digo la verdad", caption: "Soy honesto", desc: "Siempre digo lo que pasó.", img: "img/imagen29.png", emoji: "😇", theme: "verde", isCover: false, showStars: true, rating: 0 },
-            { id: 30, title: "Cuido el agua", caption: "Cierro el caño", desc: "No desperdicio el agua al lavarme.", img: "img/imagen30.png", emoji: "🚰", theme: "rojo", isCover: false, showStars: true, rating: 0 }
+            // 24 al 30: Vuelven a los colores intercalados normales
+            { id: 24, title: "Ordeno mi lugar", caption: "Todo limpio", desc: "Guardo mis cosas al terminar.", img: "img/imagen24.png", emoji: "🧹", theme: "rojo", isCover: false, showStars: true, rating: 0, sound: "sonidos/audio24.mp3" },
+            { id: 25, title: "Hago la fila", caption: "En orden", desc: "Me formo sin empujar a los demás.", img: "img/imagen25.png", emoji: "🚶‍♂️", theme: "amarillo", isCover: false, showStars: true, rating: 0, sound: "sonidos/audio25.mp3" },
+            { id: 26, title: "Espero mi turno", caption: "Paciencia", desc: "Espero con calma a que me toque.", img: "img/imagen26.png", emoji: "⏳", theme: "verde", isCover: false, showStars: true, rating: 0, sound: "sonidos/audio26.mp3" },
+            { id: 27, title: "Saludo al llegar", caption: "Buenos días", desc: "Digo buenos días a todos.", img: "img/imagen27.png", emoji: "👋", theme: "rojo", isCover: false, showStars: true, rating: 0, sound: "sonidos/audio27.mp3" },
+            { id: 28, title: "Me despido", caption: "Hasta mañana", desc: "Digo adiós al irme a casa.", img: "img/imagen28.png", emoji: "👋", theme: "amarillo", isCover: false, showStars: true, rating: 0, sound: "sonidos/audio28.mp3" },
+            { id: 29, title: "Digo la verdad", caption: "Soy honesto", desc: "Siempre digo lo que pasó.", img: "img/imagen29.png", emoji: "😇", theme: "verde", isCover: false, showStars: true, rating: 0, sound: "sonidos/audio29.mp3" },
+            { id: 30, title: "Cuido el agua", caption: "Cierro el caño", desc: "No desperdicio el agua al lavarme.", img: "img/imagen30.png", emoji: "🚰", theme: "rojo", isCover: false, showStars: true, rating: 0, sound: "sonidos/audio30.mp3" }
         ];
  
         const PRAISE_MESSAGES = ["¡Perfecto! 🌟", "¡Magnífico! 🎉", "¡Muy bien! 👏"];
         let currentIndex = 0;
         let isAnimating = false;
+        
+        // Variable para controlar el audio actual y poder detenerlo si cambian de imagen rápido
+        let currentAudio = null; 
  
         const container = document.getElementById('slide-container');
         const prevBtn = document.getElementById('prev-btn');
@@ -292,7 +299,8 @@
             
             slide.className = `slide ${directionClass}`;
             
-            if (item.theme === 'rojizo') {
+            // Lógica para aplicar el fondo completo si la propiedad fullBg es true
+            if (item.fullBg) {
                 slide.style.backgroundColor = `#${theme.bg}`;
                 slide.style.borderColor = `#${theme.text}`;
             } else {
@@ -306,9 +314,9 @@
  
             if (item.isTrafficLight) {
                 const btnsConfig = [
-                    { id: 'btn-verde', baseColor: '#4CAF50', bgColor: '#E8F5E9', borderColor: '#4CAF50', title: 'VERDE', text: 'Estoy tranquilo. Puedo aprender.', sound: 'sonido_verde.mp3', flashColor: '#BBEAA6' },
-                    { id: 'btn-amarillo', baseColor: '#FFEB3B', bgColor: '#FFF9C4', borderColor: '#FBC02D', title: 'AMARILLO', text: 'Me estoy molestando. Necesito apoyo.', sound: 'sonido_amarillo.mp3', flashColor: '#FEF08A' },
-                    { id: 'btn-rojo', baseColor: '#F44336', bgColor: '#FFEBEE', borderColor: '#F44336', title: 'ROJO', text: 'Estoy en crisis. Necesito ayuda ya.', sound: 'sonido_rojo.mp3', flashColor: '#FECACA' }
+                    { id: 'btn-verde', baseColor: '#4CAF50', bgColor: '#E8F5E9', borderColor: '#4CAF50', title: 'VERDE', text: 'Estoy tranquilo. Puedo aprender.', sound: 'sonidos/sonido_verde.mp3', flashColor: '#BBEAA6' },
+                    { id: 'btn-amarillo', baseColor: '#FFEB3B', bgColor: '#FFF9C4', borderColor: '#FBC02D', title: 'AMARILLO', text: 'Me estoy molestando. Necesito apoyo.', sound: 'sonidos/sonido_amarillo.mp3', flashColor: '#FEF08A' },
+                    { id: 'btn-rojo', baseColor: '#F44336', bgColor: '#FFEBEE', borderColor: '#F44336', title: 'ROJO', text: 'Estoy en crisis. Necesito ayuda ya.', sound: 'sonidos/sonido_rojo.mp3', flashColor: '#FECACA' }
                 ];
 
                 let slideHTML = `<div class="pic-frame" style="background-color:transparent; border:none; padding:0 1rem; height:100%; width:100%; box-shadow: none; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1rem;">`;
@@ -344,8 +352,12 @@
                         const soundFile = this.getAttribute('data-sound');
                         
                         slide.style.backgroundColor = flashColor;
-                        const audio = new Audio(soundFile);
-                        audio.play().catch(e => console.log('Aún no has agregado el archivo: ' + soundFile));
+                        
+                        // Detener cualquier audio previo
+                        if(currentAudio) currentAudio.pause();
+                        
+                        currentAudio = new Audio(soundFile);
+                        currentAudio.play().catch(e => console.log('Aún no has agregado el archivo: ' + soundFile));
                         
                         setTimeout(() => {
                             slide.style.backgroundColor = originalBg;
@@ -384,17 +396,20 @@
 
                 slideHTML += `</div>`;
             } else {
-                const innerBg = item.theme === 'rojizo' ? 'FFFFFF' : `${theme.bg}44`;
+                // Si fullBg es true, las cajitas interiores se hacen blancas para contrastar
+                const innerBg = item.fullBg ? 'FFFFFF' : `${theme.bg}44`;
+                const titleBg = item.fullBg ? 'FFFFFF' : theme.bg;
+                const borderCol = item.fullBg ? theme.text : theme.bg;
 
                 slideHTML = `
-                    <div class="pic-title" style="background-color:#${item.theme === 'rojizo' ? 'FFFFFF' : theme.bg}; border-color:#${theme.text}; color:#${theme.text};">
+                    <div class="pic-title" style="background-color:#${titleBg}; border-color:#${theme.text}; color:#${theme.text};">
                         ${item.title}
                     </div>
-                    <div class="pic-frame" style="background-color:#${innerBg}; border-color:#${item.theme === 'rojizo' ? theme.text : theme.bg};">
+                    <div class="pic-frame" style="background-color:#${innerBg}; border-color:#${borderCol};">
                         ${pictureHTML}
                         ${item.caption ? `<div class="pic-caption" style="color:#${theme.text};">${item.caption}</div>` : ''}
                     </div>
-                    <div class="pic-desc" style="background-color:#${innerBg}; border-color:#${item.theme === 'rojizo' ? theme.text : theme.bg}; color:#${theme.text};">
+                    <div class="pic-desc" style="background-color:#${innerBg}; border-color:#${borderCol}; color:#${theme.text};">
                         ${item.desc}
                     </div>
                 `;
@@ -472,6 +487,18 @@
             currentIndex = newIndex;
             updateDots();
  
+            // ----- LÓGICA DE AUDIO AL CAMBIAR DE IMAGEN -----
+            // Si hay un audio sonando, lo detenemos para que no se crucen
+            if (currentAudio) {
+                currentAudio.pause();
+            }
+            
+            // Si el nuevo pictograma tiene un sonido asignado, lo reproducimos
+            if (pictograms[newIndex].sound && !pictograms[newIndex].isTrafficLight) {
+                currentAudio = new Audio(pictograms[newIndex].sound);
+                currentAudio.play().catch(e => console.log('El audio ' + pictograms[newIndex].sound + ' no fue encontrado.'));
+            }
+
             setTimeout(() => {
                 if (currentSlide) currentSlide.remove();
                 isAnimating = false;
