@@ -302,8 +302,8 @@
                         showPraise();
                         // AUDIO DE 5 ESTRELLAS - CORREGIDO EL NOMBRE AQUÍ
                         if(currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
-                        currentAudio = new Audio('sonidos/sonidodelas5estrellas.mp3');
-                        currentAudio.play().catch(e => console.log('Audio no encontrado: sonidos/sonidodelas5estrellas.mp3'));
+                        currentAudio = new Audio('sonidos/sonido5estrellas.mp3');
+                        currentAudio.play().catch(e => console.log('Audio no encontrado: sonidos/sonido5estrellas.mp3'));
                     }
                 });
                 starsWrap.appendChild(btn);
