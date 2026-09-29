@@ -300,10 +300,10 @@
                     render();
                     if (current === 5) {
                         showPraise();
-                        // INTEGRACIÓN DEL AUDIO DE 5 ESTRELLAS
-                        if(currentAudio) currentAudio.pause();
-                        currentAudio = new Audio('sonidos/sonidoestrellas.mp3');
-                        currentAudio.play().catch(e => console.log('Audio no encontrado: sonidos/sonidoestrellas.mp3'));
+                        // AUDIO DE 5 ESTRELLAS - CORREGIDO EL NOMBRE AQUÍ
+                        if(currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
+                        currentAudio = new Audio('sonidos/sonido5estrellas.mp3');
+                        currentAudio.play().catch(e => console.log('Audio no encontrado: sonidos/sonido5estrellas.mp3'));
                     }
                 });
                 starsWrap.appendChild(btn);
@@ -328,7 +328,6 @@
  
             if (item.isEmotionsBoard) {
                 const emotions = [
-                    // INTEGRACIÓN DE AUDIOS FELIZ Y TRISTE
                     { id: 'emo-feliz', text: 'Feliz', emoji: '😊', bgColor: '#BBF7D0', borderColor: '#22C55E', textCol: '#14532D', animClass: 'animate-bounce-custom', sound: 'sonidos/sonidofeliz.mp3' },
                     { id: 'emo-triste', text: 'Triste', emoji: '😢', bgColor: '#BFDBFE', borderColor: '#3B82F6', textCol: '#1E3A8A', animClass: 'animate-droop', sound: 'sonidos/sonidotriste.mp3' },
                     { id: 'emo-enojado', text: 'Enojado', emoji: '😡', bgColor: '#FECACA', borderColor: '#EF4444', textCol: '#7F1D1D', animClass: 'animate-shake-fast', sound: 'sonidos/sonidoenojado.mp3' },
@@ -381,7 +380,7 @@
                         
                         slide.style.backgroundColor = bgColor;
                         
-                        if(currentAudio) currentAudio.pause();
+                        if(currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
                         currentAudio = new Audio(soundFile);
                         currentAudio.play().catch(e => console.log('Audio no encontrado: ' + soundFile));
                         
@@ -430,9 +429,11 @@
                         const flashColor = this.getAttribute('data-flash');
                         const soundFile = this.getAttribute('data-sound');
                         slide.style.backgroundColor = flashColor;
-                        if(currentAudio) currentAudio.pause();
+                        
+                        if(currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
                         currentAudio = new Audio(soundFile);
                         currentAudio.play().catch(e => console.log('Audio no encontrado: ' + soundFile));
+                        
                         setTimeout(() => { slide.style.backgroundColor = originalBg; }, 1600);
                     });
                 });
@@ -528,7 +529,8 @@
             currentIndex = newIndex;
             updateDots();
  
-            if (currentAudio) { currentAudio.pause(); }
+            // AQUÍ LA LÓGICA QUE EXIGES: Se detiene el audio anterior y solo suena el del pictograma actual
+            if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
             
             if (pictograms[newIndex].sound && !pictograms[newIndex].isTrafficLight && !pictograms[newIndex].isEmotionsBoard) {
                 currentAudio = new Audio(pictograms[newIndex].sound);
